@@ -45,9 +45,27 @@ namespace WeatherApplication
 			this.labelLowTemp = labelLowTemp;
 			}
 		}
+
+	public class ForecastHours
+		{
+		public Label hourRange;
+		public Label temperature;
+		public Label precipitation;
+		public Label windSpeed;
+
+		public ForecastHours( Label hourRange, Label temperature, Label precipitation, Label windSpeed )
+			{
+			this.hourRange = hourRange;
+			this.temperature = temperature;
+			this.precipitation = precipitation;
+			this.windSpeed = windSpeed;
+			}
+		}
+
 	public partial class MainWindow : Window
 		{
 		ForecastDay[] forecastDays;
+		ForecastHours[] forecastHours;
 		DispatcherTimer weatherUpdateTimer;
 		DispatcherTimer clockUpdateTimer;
 
@@ -96,6 +114,15 @@ namespace WeatherApplication
 				new ForecastDay(imageDay5, labelDate5, labelDayHigh5, labelDayLow5)
 				};
 
+			forecastHours = new ForecastHours[]
+				{
+				new ForecastHours(labelHourRange1, labelTemp1, labelPrecipitation1, labelWind1),
+				new ForecastHours(labelHourRange2, labelTemp2, labelPrecipitation2, labelWind2),
+				new ForecastHours(labelHourRange3, labelTemp3, labelPrecipitation3, labelWind3),
+				new ForecastHours(labelHourRange4, labelTemp4, labelPrecipitation4, labelWind4),
+				new ForecastHours(labelHourRange5, labelTemp5, labelPrecipitation5, labelWind5),
+				};
+
 			// call the update weather methods now.
 			UpdateWeather(null, null);
 			// call the clock update method now.
@@ -106,6 +133,7 @@ namespace WeatherApplication
 			{
 			UpdateCurrentWeather();
 			UpdateForecast();
+			UpdateHourlyForecast();
 			UpdateLastApplicationUpdate();
 			}
 
@@ -217,6 +245,62 @@ namespace WeatherApplication
 				labelErrors.Content = "Status good.";
 				}
 			catch( Exception e )
+				{
+				labelErrors.Content = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				}
+			}
+
+		public async void UpdateHourlyForecast()
+			{
+			try
+				{
+				labelErrors.Content = "Status working...";
+				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast?id=4409896&MODE=XML&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebResponse response = await request.GetResponseAsync();
+				Stream dataStream = response.GetResponseStream();
+
+				var xdoc = XDocument.Load( dataStream );
+
+				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
+
+				int i = 0;
+				int max = forecastHours.Length;
+
+				foreach ( XElement timeElement in forecastNode.Elements() )
+					{
+					if ( i < max )
+						{
+						DateTime from = DateTime.Parse(timeElement.Attribute("from").Value).ToLocalTime();
+						DateTime to = DateTime.Parse(timeElement.Attribute("to").Value).ToLocalTime();
+
+						forecastHours[i].hourRange.Content = String.Format("{0}-{1}", from.ToShortTimeString(), to.ToShortTimeString());
+
+						var temp = CelciusToDegrees(float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value));
+
+						forecastHours[i].temperature.Content = String.Format("T: {0}",temp.ToString("F0"));
+
+						var precipElement = timeElement.XPathSelectElement("precipitation");
+
+						forecastHours[i].precipitation.Content = (precipElement.Attribute("value")) != null ? String.Format("P: {0}\" {1}", Math.Round(double.Parse(precipElement.Attribute("value").Value) * 0.03937) /*convert to inches*/, precipElement.Attribute("type").Value) : "P: 0\"";
+
+						var windDirectionElement = timeElement.XPathSelectElement("windDirection");
+						var windSpeedElement = timeElement.XPathSelectElement("windSpeed");
+
+						double windSpeedMetersPerSecond = float.Parse(windSpeedElement.Attribute("mps").Value);
+						float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+						
+						string windDirection = windDirectionElement.Attribute("code").Value;
+
+						forecastHours[i].windSpeed.Content = String.Format("W: {0} {1}", windSpeedMilesPerHour, windDirection);
+						++i;
+						}
+					else
+						{
+						break;
+						}
+					}
+				}
+			catch (Exception e)
 				{
 				labelErrors.Content = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
 				}
