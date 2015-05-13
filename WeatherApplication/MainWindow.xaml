@@ -7,9 +7,9 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-		<Label x:Name="labelCurrentWeather" Content="current weather" HorizontalAlignment="Left" Margin="117,175,0,0" VerticalAlignment="Top" Width="106" Height="26" RenderTransformOrigin="-0.443,0.474"/>
+		<Label x:Name="labelCurrentWeather" Content="current weather" HorizontalAlignment="Left" Margin="76,175,0,0" VerticalAlignment="Top" Width="106" Height="26" RenderTransformOrigin="-0.443,0.474"/>
 		<Label x:Name="labelCity" HorizontalAlignment="Left" Margin="87,2,0,0" VerticalAlignment="Top" Height="34" Width="147" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="City" FontSize="14" FontWeight="Bold"/>
-		<Image x:Name="imageCurrentWeather" HorizontalAlignment="Left" Height="49" Margin="63,158,0,0" VerticalAlignment="Top" Width="68"/>
+		<Image x:Name="imageCurrentWeather" HorizontalAlignment="Left" Height="49" Margin="22,158,0,0" VerticalAlignment="Top" Width="68"/>
 		<Label x:Name="labelLastWeatherApiUpdate" Content="last update" HorizontalAlignment="Left" Margin="542,401,0,0" VerticalAlignment="Top" Width="122" Height="26"/>
 		<Image x:Name="imageDay1" HorizontalAlignment="Left" Height="100" Margin="36,275,0,0" VerticalAlignment="Top" Width="100"/>
 		<Label x:Name="labelDayHigh1" Content="labelHighTemp" HorizontalAlignment="Left" Margin="36,375,0,0" VerticalAlignment="Top" Width="47" Height="26"/>
@@ -37,35 +37,40 @@
 		<Label x:Name="labelTimeString" Content="TIME" HorizontalAlignment="Left" Margin="469,7,0,0" VerticalAlignment="Top" Width="190" FontSize="14" FontWeight="Bold" Height="29"/>
 		<Button x:Name="buttonUpdate" Content="Force Update" HorizontalAlignment="Left" Margin="601,432,0,0" VerticalAlignment="Top" Width="75" Click="buttonUpdate_Click" Height="20"/>
 		<Label x:Name="labelErrors" Content="" HorizontalAlignment="Left" Margin="41,427,0,0" VerticalAlignment="Top" Width="348" Height="42"/>
-		<GroupBox x:Name="groupBox" Header="Hourly Forecast" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,51,0,0" Height="168" Width="377"/>
-		<Label x:Name="labelHourRange1" Content="Hour Range" HorizontalAlignment="Left" Margin="342,70,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation1" Content="Hour Range" HorizontalAlignment="Left" Margin="525,70,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelWind1" Content="Hour Range" HorizontalAlignment="Left" Margin="593,70,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelHourRange2" Content="Hour Range" HorizontalAlignment="Left" Margin="342,101,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation2" Content="Hour Range" HorizontalAlignment="Left" Margin="525,101,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelWind2" Content="Hour Range" HorizontalAlignment="Left" Margin="593,101,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelHourRange3" Content="Hour Range" HorizontalAlignment="Left" Margin="342,132,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation3" Content="Hour Range" HorizontalAlignment="Left" Margin="525,132,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelWind3" Content="Hour Range" HorizontalAlignment="Left" Margin="593,132,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelTemp1" Content="Hour Range" HorizontalAlignment="Left" Margin="453,70,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelTemp2" Content="Hour Range" HorizontalAlignment="Left" Margin="453,101,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelTemp3" Content="Hour Range" HorizontalAlignment="Left" Margin="453,132,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelHourRange4" Content="Hour Range" HorizontalAlignment="Left" Margin="342,162,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation4" Content="Hour Range" HorizontalAlignment="Left" Margin="525,162,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelWind4" Content="Hour Range" HorizontalAlignment="Left" Margin="593,162,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelTemp4" Content="Hour Range" HorizontalAlignment="Left" Margin="453,162,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelHourRange5" Content="Hour Range" HorizontalAlignment="Left" Margin="342,193,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation5" Content="Hour Range" HorizontalAlignment="Left" Margin="525,193,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelWind5" Content="Hour Range" HorizontalAlignment="Left" Margin="593,193,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelTemp5" Content="Hour Range" HorizontalAlignment="Left" Margin="453,193,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
-		<Label x:Name="labelTemp" Content="temp" HorizontalAlignment="Left" Margin="136,70,0,0" VerticalAlignment="Top" Width="55" Height="26"/>
-		<Label x:Name="labelHumidity" Content="humidity" HorizontalAlignment="Left" Margin="136,101,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
-		<Label x:Name="labelPressure" Content="pressure" HorizontalAlignment="Left" Margin="136,127,0,0" VerticalAlignment="Top" Height="26" Width="74"/>
-		<Label Content="Temperature" HorizontalAlignment="Left" Margin="63,70,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
-		<Label Content="Humidity" HorizontalAlignment="Left" Margin="63,101,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
-		<Label Content="Pressure" HorizontalAlignment="Left" Margin="63,127,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
-		<GroupBox x:Name="groupBox1" Header="Current Conditions" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="51,51,0,0" Height="165" Width="183" d:IsHidden="True"/>
+		<GroupBox x:Name="groupBox" Header="Hourly Forecast" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="237,48,0,0" Height="168" Width="453"/>
+		<Label x:Name="labelHourRange1" Content="Hour Range" HorizontalAlignment="Left" Margin="258,67,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
+		<Label x:Name="labelPrecipitation1" Content="Hour Range" HorizontalAlignment="Left" Margin="441,67,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelWind1" Content="Hour Range" HorizontalAlignment="Left" Margin="509,67,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelHourRange2" Content="Hour Range" HorizontalAlignment="Left" Margin="258,98,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
+		<Label x:Name="labelPrecipitation2" Content="Hour Range" HorizontalAlignment="Left" Margin="441,98,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelWind2" Content="Hour Range" HorizontalAlignment="Left" Margin="509,98,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelHourRange3" Content="Hour Range" HorizontalAlignment="Left" Margin="258,129,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
+		<Label x:Name="labelPrecipitation3" Content="Hour Range" HorizontalAlignment="Left" Margin="441,129,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelWind3" Content="Hour Range" HorizontalAlignment="Left" Margin="509,129,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelTemp1" Content="Hour Range" HorizontalAlignment="Left" Margin="369,67,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelTemp2" Content="Hour Range" HorizontalAlignment="Left" Margin="369,98,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelTemp3" Content="Hour Range" HorizontalAlignment="Left" Margin="369,129,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelHourRange4" Content="Hour Range" HorizontalAlignment="Left" Margin="258,159,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
+		<Label x:Name="labelPrecipitation4" Content="Hour Range" HorizontalAlignment="Left" Margin="441,159,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelWind4" Content="Hour Range" HorizontalAlignment="Left" Margin="509,159,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelTemp4" Content="Hour Range" HorizontalAlignment="Left" Margin="369,159,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelHourRange5" Content="Hour Range" HorizontalAlignment="Left" Margin="258,190,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
+		<Label x:Name="labelPrecipitation5" Content="Hour Range" HorizontalAlignment="Left" Margin="441,190,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelWind5" Content="Hour Range" HorizontalAlignment="Left" Margin="509,190,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelTemp5" Content="Hour Range" HorizontalAlignment="Left" Margin="369,190,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelTemp" Content="temp" HorizontalAlignment="Left" Margin="95,70,0,0" VerticalAlignment="Top" Width="55" Height="26"/>
+		<Label x:Name="labelHumidity" Content="humidity" HorizontalAlignment="Left" Margin="95,101,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
+		<Label x:Name="labelPressure" Content="pressure" HorizontalAlignment="Left" Margin="95,127,0,0" VerticalAlignment="Top" Height="26" Width="74"/>
+		<Label Content="Temperature" HorizontalAlignment="Left" Margin="22,70,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
+		<Label Content="Humidity" HorizontalAlignment="Left" Margin="22,101,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
+		<Label Content="Pressure" HorizontalAlignment="Left" Margin="22,127,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
+		<GroupBox x:Name="groupBox1" Header="Current Conditions" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0" Height="165" Width="183"/>
 		<GroupBox x:Name="groupBox2" Header="5 Day Forecast" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,227,0,0" Height="200" Width="680"/>
+		<Label x:Name="labelClouds1" Content="Hour Range" HorizontalAlignment="Left" Margin="575,67,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelClouds2" Content="Hour Range" HorizontalAlignment="Left" Margin="575,98,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelClouds3" Content="Hour Range" HorizontalAlignment="Left" Margin="575,129,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelClouds4" Content="Hour Range" HorizontalAlignment="Left" Margin="575,159,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
+		<Label x:Name="labelClouds5" Content="Hour Range" HorizontalAlignment="Left" Margin="575,190,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
 
 	</Grid>
 </Window>

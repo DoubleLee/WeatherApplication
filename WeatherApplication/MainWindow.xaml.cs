@@ -52,13 +52,15 @@ namespace WeatherApplication
 		public Label temperature;
 		public Label precipitation;
 		public Label windSpeed;
+		public Label clouds;
 
-		public ForecastHours( Label hourRange, Label temperature, Label precipitation, Label windSpeed )
+		public ForecastHours( Label hourRange, Label temperature, Label precipitation, Label windSpeed, Label clouds )
 			{
 			this.hourRange = hourRange;
 			this.temperature = temperature;
 			this.precipitation = precipitation;
 			this.windSpeed = windSpeed;
+			this.clouds = clouds;
 			}
 		}
 
@@ -116,11 +118,11 @@ namespace WeatherApplication
 
 			forecastHours = new ForecastHours[]
 				{
-				new ForecastHours(labelHourRange1, labelTemp1, labelPrecipitation1, labelWind1),
-				new ForecastHours(labelHourRange2, labelTemp2, labelPrecipitation2, labelWind2),
-				new ForecastHours(labelHourRange3, labelTemp3, labelPrecipitation3, labelWind3),
-				new ForecastHours(labelHourRange4, labelTemp4, labelPrecipitation4, labelWind4),
-				new ForecastHours(labelHourRange5, labelTemp5, labelPrecipitation5, labelWind5),
+				new ForecastHours(labelHourRange1, labelTemp1, labelPrecipitation1, labelWind1, labelClouds1),
+				new ForecastHours(labelHourRange2, labelTemp2, labelPrecipitation2, labelWind2, labelClouds2),
+				new ForecastHours(labelHourRange3, labelTemp3, labelPrecipitation3, labelWind3, labelClouds3),
+				new ForecastHours(labelHourRange4, labelTemp4, labelPrecipitation4, labelWind4, labelClouds4),
+				new ForecastHours(labelHourRange5, labelTemp5, labelPrecipitation5, labelWind5, labelClouds5),
 				};
 
 			// call the update weather methods now.
@@ -292,6 +294,9 @@ namespace WeatherApplication
 						string windDirection = windDirectionElement.Attribute("code").Value;
 
 						forecastHours[i].windSpeed.Content = String.Format("W: {0} {1}", windSpeedMilesPerHour, windDirection);
+
+
+						forecastHours[i].clouds.Content = String.Format("C: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value);
 						++i;
 						}
 					else
