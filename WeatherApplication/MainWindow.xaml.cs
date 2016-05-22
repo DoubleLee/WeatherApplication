@@ -150,10 +150,9 @@ namespace WeatherApplication
 				{
 				labelErrors.Content = "Status working...";
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
-				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/weather?zip=65804,us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
-				string text = dataStream.ToString();
 				var xdoc = XDocument.Load( dataStream );
 
 				var weatherNode = xdoc.Root;
@@ -217,7 +216,7 @@ namespace WeatherApplication
 			try
 				{
 				labelErrors.Content = "Status working...";
-				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast/daily?zip=65804,us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
 
@@ -257,7 +256,7 @@ namespace WeatherApplication
 			try
 				{
 				labelErrors.Content = "Status working...";
-				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast?zip=65804,us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
 
@@ -279,11 +278,11 @@ namespace WeatherApplication
 
 						var temp = CelciusToDegrees(float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value));
 
-						forecastHours[i].temperature.Content = String.Format("T: {0}",temp.ToString("F0"));
+						forecastHours[i].temperature.Content = String.Format("Temp: {0}",temp.ToString("F0"));
 
 						var precipElement = timeElement.XPathSelectElement("precipitation");
 
-						forecastHours[i].precipitation.Content = (precipElement.Attribute("value")) != null ? String.Format("P: {0:f2}\" {1}", double.Parse(precipElement.Attribute("value").Value) * 0.03937 /*convert to inches*/, precipElement.Attribute("type").Value) : "P: 0\"";
+						forecastHours[i].precipitation.Content = (precipElement.Attribute("value")) != null ? String.Format("Precip: {0:f2}\" {1}", double.Parse(precipElement.Attribute("value").Value) * 0.03937 /*convert to inches*/, precipElement.Attribute("type").Value) : "Precip: 0\"";
 
 						var windDirectionElement = timeElement.XPathSelectElement("windDirection");
 						var windSpeedElement = timeElement.XPathSelectElement("windSpeed");
@@ -293,10 +292,10 @@ namespace WeatherApplication
 						
 						string windDirection = windDirectionElement.Attribute("code").Value;
 
-						forecastHours[i].windSpeed.Content = String.Format("W: {0} {1}", windSpeedMilesPerHour, windDirection);
+						forecastHours[i].windSpeed.Content = String.Format("Wind: {0} {1}", windSpeedMilesPerHour, windDirection);
 
 
-						forecastHours[i].clouds.Content = String.Format("C: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value);
+						forecastHours[i].clouds.Content = String.Format("Clouds: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value);
 						++i;
 						}
 					else
@@ -375,6 +374,11 @@ namespace WeatherApplication
 		private void buttonUpdate_Click(object sender, RoutedEventArgs e)
 			{
 			UpdateWeather(buttonUpdate, EventArgs.Empty);
+			}
+
+		private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+			{
+
 			}
 		}
 	}
