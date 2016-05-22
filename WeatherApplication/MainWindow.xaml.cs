@@ -150,10 +150,10 @@ namespace WeatherApplication
 				{
 				labelErrors.Content = "Status working...";
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
-				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/weather?id=4409896&MODE=XML&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/weather?zip=65804,us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2");
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
-
+				string text = dataStream.ToString();
 				var xdoc = XDocument.Load( dataStream );
 
 				var weatherNode = xdoc.Root;
@@ -217,7 +217,7 @@ namespace WeatherApplication
 			try
 				{
 				labelErrors.Content = "Status working...";
-				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast/daily?id=4409896&MODE=XML&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast/daily?zip=65804,us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2");
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
 
@@ -257,7 +257,7 @@ namespace WeatherApplication
 			try
 				{
 				labelErrors.Content = "Status working...";
-				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast?id=4409896&MODE=XML&APPID=930964919a915aefc90d0d5e3b0f4bd2");
+				WebRequest request = WebRequest.Create("http://api.openweathermap.org/data/2.5/forecast?zip=65804,us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2");
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
 
