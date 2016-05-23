@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
@@ -73,6 +74,9 @@ namespace WeatherApplication
 
 		DateTime lastDateTime;
 
+		DateTime lastApiUpdate = DateTime.Now;
+		TaskbarItemInfo taskBarInfo;
+
 		public DateTime CurrentDisplayedDate
 			{
 			get
@@ -92,7 +96,12 @@ namespace WeatherApplication
 		public MainWindow()
 			{
 			InitializeComponent();
-			
+
+			// Setup the task bar info
+			taskBarInfo = new TaskbarItemInfo();
+			taskBarInfo.ProgressState = TaskbarItemProgressState.Normal;
+			Application.Current.MainWindow.TaskbarItemInfo = taskBarInfo;
+
 			// setup the weather update timer. Runs every 10 minutes.
 			weatherUpdateTimer = new DispatcherTimer();
 			weatherUpdateTimer.Interval = new TimeSpan(0, 0, 10, 0);
@@ -186,16 +195,17 @@ namespace WeatherApplication
 				string lastUpdate = weatherNode.XPathSelectElement("lastupdate").Attribute("value").Value;
 
 				// parse the last api update string to a datetime struct.
-				DateTime dateTime = DateTime.Parse(lastUpdate);
+				lastApiUpdate = DateTime.Parse(lastUpdate);
 				// tell the struct that it is UTC time.
-				dateTime = DateTime.SpecifyKind( dateTime, DateTimeKind.Utc);
-
+				lastApiUpdate = DateTime.SpecifyKind(lastApiUpdate, DateTimeKind.Utc);
+				lastApiUpdate = lastApiUpdate.ToLocalTime();
 				// convert UTC time to local time and parse it to string and set the label.
-				labelLastWeatherApiUpdate.Content = dateTime.ToLocalTime().ToLongTimeString();
+				labelLastWeatherApiUpdate.Content = lastApiUpdate.ToLongTimeString();
 
 				// load the current weather image icon.
 				string weatherIconString = weatherNode.XPathSelectElement("weather").Attribute("icon").Value;
 				LoadWeatherIcon( imageCurrentWeather, weatherIconString );
+				taskBarInfo.Overlay = imageCurrentWeather.Source;
 				LoadIcon( weatherIconString );
 
 				labelErrors.Content = "Status good.";
@@ -368,7 +378,12 @@ namespace WeatherApplication
 		/// <param name="args"></param>
 		public void UpdateClockString(object sender, EventArgs args )
 			{
-			CurrentDisplayedDate = DateTime.Now;
+			var now = DateTime.Now;
+			CurrentDisplayedDate = now;
+
+			var timeSinceApiUpdate = now - lastApiUpdate;
+
+			taskBarInfo.ProgressValue = timeSinceApiUpdate.TotalHours;
 			}
 
 		private void buttonUpdate_Click(object sender, RoutedEventArgs e)
