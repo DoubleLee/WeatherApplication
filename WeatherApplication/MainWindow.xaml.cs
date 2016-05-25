@@ -291,10 +291,10 @@ namespace WeatherApplication
 						forecastHours[i].temperature.Content = String.Format("Temp: {0}",temp.ToString("F0"));
 
 						var precipElement = timeElement.XPathSelectElement("precipitation");
-
-						if (precipElement != null)
+                        var precipValue = precipElement.Attribute("value");
+                        if (precipValue != null)
 							{
-							double precipMilliMetersPerHour = double.Parse(precipElement.Attribute("value").Value);
+                            double precipMilliMetersPerHour = double.Parse(precipValue.Value);
 							double precipMilliMetersInTimeFrame = precipMilliMetersPerHour * 3.0; // 3 because it's 3 hours in a per hour format.
 							double precipInches = precipMilliMetersInTimeFrame * 0.03937; // this number is the conversion to inches.
 
