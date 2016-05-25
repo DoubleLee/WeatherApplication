@@ -292,7 +292,18 @@ namespace WeatherApplication
 
 						var precipElement = timeElement.XPathSelectElement("precipitation");
 
-						forecastHours[i].precipitation.Content = (precipElement.Attribute("value")) != null ? String.Format("Precip: {0:f2}\" {1}", double.Parse(precipElement.Attribute("value").Value) * 0.03937 /*convert to inches*/, precipElement.Attribute("type").Value) : "Precip: 0\"";
+						if (precipElement != null)
+							{
+							double precipMilliMetersPerHour = double.Parse(precipElement.Attribute("value").Value);
+							double precipMilliMetersInTimeFrame = precipMilliMetersPerHour * 3.0; // 3 because it's 3 hours in a per hour format.
+							double precipInches = precipMilliMetersInTimeFrame * 0.03937; // this number is the conversion to inches.
+
+							forecastHours[i].precipitation.Content = String.Format("Precip: {0:f3}\" {1}", precipInches, precipElement.Attribute("type").Value);
+							}
+						else
+							{
+							forecastHours[i].precipitation.Content = "Precip: 0.00\"";
+							}
 
 						var windDirectionElement = timeElement.XPathSelectElement("windDirection");
 						var windSpeedElement = timeElement.XPathSelectElement("windSpeed");

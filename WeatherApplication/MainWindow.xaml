@@ -39,23 +39,23 @@
 		<Label x:Name="labelErrors" Content="" HorizontalAlignment="Left" Margin="41,427,0,0" VerticalAlignment="Top" Width="348" Height="42"/>
 		<GroupBox x:Name="groupBox" Header="Hourly Forecast" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="237,48,0,0" Height="168" Width="453"/>
 		<Label x:Name="labelHourRange1" Content="Hour Range" HorizontalAlignment="Left" Margin="249,67,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation1" Content="Precip1" HorizontalAlignment="Left" Margin="440,67,0,0" VerticalAlignment="Top" Width="101" Height="26"/>
+		<Label x:Name="labelPrecipitation1" Content="Precip1" HorizontalAlignment="Left" Margin="440,67,0,0" VerticalAlignment="Top" Width="106" Height="26"/>
 		<Label x:Name="labelWind1" Content="Wind1" HorizontalAlignment="Left" Margin="546,67,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
 		<Label x:Name="labelHourRange2" Content="Hour Range" HorizontalAlignment="Left" Margin="249,98,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation2" Content="Precip2" HorizontalAlignment="Left" Margin="440,98,0,0" VerticalAlignment="Top" Width="101" Height="26"/>
+		<Label x:Name="labelPrecipitation2" Content="Precip2" HorizontalAlignment="Left" Margin="440,98,0,0" VerticalAlignment="Top" Width="106" Height="26"/>
 		<Label x:Name="labelWind2" Content="Wind2" HorizontalAlignment="Left" Margin="546,98,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
 		<Label x:Name="labelHourRange3" Content="Hour Range" HorizontalAlignment="Left" Margin="249,129,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation3" Content="Precip3" HorizontalAlignment="Left" Margin="440,129,0,0" VerticalAlignment="Top" Width="101" Height="26"/>
+		<Label x:Name="labelPrecipitation3" Content="Precip3" HorizontalAlignment="Left" Margin="440,129,0,0" VerticalAlignment="Top" Width="106" Height="26"/>
 		<Label x:Name="labelWind3" Content="Wind3" HorizontalAlignment="Left" Margin="546,129,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
 		<Label x:Name="labelTemp1" Content="Temp1" HorizontalAlignment="Left" Margin="374,67,0,0" VerticalAlignment="Top" Width="63" Height="26"/>
 		<Label x:Name="labelTemp2" Content="Temp2" HorizontalAlignment="Left" Margin="374,98,0,0" VerticalAlignment="Top" Width="63" Height="26"/>
 		<Label x:Name="labelTemp3" Content="Temp3" HorizontalAlignment="Left" Margin="374,129,0,0" VerticalAlignment="Top" Width="63" Height="26"/>
 		<Label x:Name="labelHourRange4" Content="Hour Range" HorizontalAlignment="Left" Margin="249,159,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation4" Content="Precip4" HorizontalAlignment="Left" Margin="440,159,0,0" VerticalAlignment="Top" Width="101" Height="26"/>
+		<Label x:Name="labelPrecipitation4" Content="Precip4" HorizontalAlignment="Left" Margin="440,159,0,0" VerticalAlignment="Top" Width="106" Height="26"/>
 		<Label x:Name="labelWind4" Content="Wind4" HorizontalAlignment="Left" Margin="546,159,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
 		<Label x:Name="labelTemp4" Content="Temp4" HorizontalAlignment="Left" Margin="374,159,0,0" VerticalAlignment="Top" Width="63" Height="26"/>
 		<Label x:Name="labelHourRange5" Content="Hour Range" HorizontalAlignment="Left" Margin="249,190,0,0" VerticalAlignment="Top" Width="121" Height="26"/>
-		<Label x:Name="labelPrecipitation5" Content="Precip5" HorizontalAlignment="Left" Margin="440,190,0,0" VerticalAlignment="Top" Width="101" Height="26"/>
+		<Label x:Name="labelPrecipitation5" Content="Precip5" HorizontalAlignment="Left" Margin="440,190,0,0" VerticalAlignment="Top" Width="106" Height="26"/>
 		<Label x:Name="labelWind5" Content="Wind5" HorizontalAlignment="Left" Margin="546,190,0,0" VerticalAlignment="Top" Width="66" Height="26"/>
 		<Label x:Name="labelTemp5" Content="Temp5" HorizontalAlignment="Left" Margin="374,190,0,0" VerticalAlignment="Top" Width="63" Height="26"/>
 		<Label x:Name="labelTemp" Content="temp" HorizontalAlignment="Left" Margin="95,70,0,0" VerticalAlignment="Top" Width="55" Height="26"/>
