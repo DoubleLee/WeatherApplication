@@ -21,12 +21,27 @@ using System.Windows.Shell;
 using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using System.Xml.XPath;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 
 namespace WeatherApplication
 	{
+	[Serializable]
+	public class Configuration
+		{
+		[System.Xml.Serialization.XmlElement("LastZipCode")]
+		public string lastZipCode;
+
+		public static Configuration Default
+			{
+			get 
+				{
+				return new Configuration{lastZipCode = "65804"};
+				}
+			}
+		}
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
@@ -77,6 +92,8 @@ namespace WeatherApplication
 		DateTime lastApiUpdate = DateTime.Now;
 		TaskbarItemInfo taskBarInfo;
 
+		Configuration configuration;
+
 		public DateTime CurrentDisplayedDate
 			{
 			get
@@ -96,6 +113,24 @@ namespace WeatherApplication
 		public MainWindow()
 			{
 			InitializeComponent();
+
+			string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			string configFilePath = dataFolder + "weatherConfig.txt";
+
+			if (File.Exists(configFilePath))
+				{
+				XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
+
+				StreamReader reader = new StreamReader(configFilePath);
+
+				configuration = (Configuration)serializer.Deserialize(reader);
+				}
+			else
+				{
+				configuration = Configuration.Default;
+				}
+
+			textBoxZip.Text = configuration.lastZipCode;
 
 			// Setup the task bar info
 			taskBarInfo = new TaskbarItemInfo();
@@ -123,15 +158,6 @@ namespace WeatherApplication
 				new ForecastDay(imageDay3, labelDate3, labelDayHigh3, labelDayLow3),
 				new ForecastDay(imageDay4, labelDate4, labelDayHigh4, labelDayLow4),
 				new ForecastDay(imageDay5, labelDate5, labelDayHigh5, labelDayLow5)
-				};
-
-			forecastHours = new ForecastHours[]
-				{
-				new ForecastHours(labelHourRange1, labelTemp1, labelPrecipitation1, labelWind1, labelClouds1),
-				new ForecastHours(labelHourRange2, labelTemp2, labelPrecipitation2, labelWind2, labelClouds2),
-				new ForecastHours(labelHourRange3, labelTemp3, labelPrecipitation3, labelWind3, labelClouds3),
-				new ForecastHours(labelHourRange4, labelTemp4, labelPrecipitation4, labelWind4, labelClouds4),
-				new ForecastHours(labelHourRange5, labelTemp5, labelPrecipitation5, labelWind5, labelClouds5),
 				};
 
 			// call the update weather methods now.
@@ -272,57 +298,61 @@ namespace WeatherApplication
 
 				var xdoc = XDocument.Load( dataStream );
 
+				DateTime nowMidnight = DateTime.Now.Date;
+
 				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
+				
+				listBox.Items.Clear();
 
-				int i = 0;
-				int max = forecastHours.Length;
-
+				StringBuilder forecastBuilder = new StringBuilder();
 				foreach ( XElement timeElement in forecastNode.Elements() )
 					{
-					if ( i < max )
-						{
-						DateTime from = DateTime.Parse(timeElement.Attribute("from").Value).ToLocalTime();
-						DateTime to = DateTime.Parse(timeElement.Attribute("to").Value).ToLocalTime();
+					forecastBuilder.Clear();
 
-						forecastHours[i].hourRange.Content = String.Format("{0}-{1}", from.ToShortTimeString(), to.ToShortTimeString());
+					DateTime startDate = DateTime.Parse(timeElement.Attribute("from").Value).ToLocalTime();
+					forecastBuilder.Append("Days: " + (Math.Max((startDate.Date - nowMidnight).Days, 0)).ToString());
+					forecastBuilder.Append("  ");
+					forecastBuilder.Append(startDate.ToShortTimeString());
+					forecastBuilder.Append('-');
+					forecastBuilder.Append(DateTime.Parse(timeElement.Attribute("to").Value).ToLocalTime().ToShortTimeString());
+					forecastBuilder.Append("\t");
 
-						var temp = CelciusToDegrees(float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value));
-
-						forecastHours[i].temperature.Content = String.Format("Temp: {0}",temp.ToString("F0"));
-
-						var precipElement = timeElement.XPathSelectElement("precipitation");
-                        var precipValue = precipElement.Attribute("value");
-                        if (precipValue != null)
-							{
-                            double precipMilliMetersPerHour = double.Parse(precipValue.Value);
-							double precipMilliMetersInTimeFrame = precipMilliMetersPerHour * 3.0; // 3 because it's 3 hours in a per hour format.
-							double precipInches = precipMilliMetersInTimeFrame * 0.03937; // this number is the conversion to inches.
-
-							forecastHours[i].precipitation.Content = String.Format("Precip: {0:f3}\" {1}", precipInches, precipElement.Attribute("type").Value);
-							}
-						else
-							{
-							forecastHours[i].precipitation.Content = "Precip: 0.00\"";
-							}
-
-						var windDirectionElement = timeElement.XPathSelectElement("windDirection");
-						var windSpeedElement = timeElement.XPathSelectElement("windSpeed");
-
-						double windSpeedMetersPerSecond = float.Parse(windSpeedElement.Attribute("mps").Value);
-						float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+					var temp = CelciusToDegrees(float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value));
 						
-						string windDirection = windDirectionElement.Attribute("code").Value;
+					forecastBuilder.Append(String.Format("Temp: {0}",temp.ToString("F0")));
+					forecastBuilder.Append("\t");
 
-						forecastHours[i].windSpeed.Content = String.Format("Wind: {0} {1}", windSpeedMilesPerHour, windDirection);
+					var precipElement = timeElement.XPathSelectElement("precipitation");
+                    var precipValue = precipElement.Attribute("value");
+                    if (precipValue != null)
+						{
+                        double precipMilliMetersPerHour = double.Parse(precipValue.Value);
+						double precipMilliMetersInTimeFrame = precipMilliMetersPerHour * 3.0; // 3 because it's 3 hours in a per hour format.
+						double precipInches = precipMilliMetersInTimeFrame * 0.03937; // this number is the conversion to inches.
 
-
-						forecastHours[i].clouds.Content = String.Format("Clouds: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value);
-						++i;
+						forecastBuilder.Append(String.Format("Precip: {0:f3}\" {1}", precipInches, precipElement.Attribute("type").Value));
 						}
 					else
 						{
-						break;
+						forecastBuilder.Append("Precip: 0.000\" none");
 						}
+					forecastBuilder.Append("\t");
+
+					var windDirectionElement = timeElement.XPathSelectElement("windDirection");
+					var windSpeedElement = timeElement.XPathSelectElement("windSpeed");
+
+					double windSpeedMetersPerSecond = float.Parse(windSpeedElement.Attribute("mps").Value);
+					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+						
+					string windDirection = windDirectionElement.Attribute("code").Value;
+
+					forecastBuilder.Append(String.Format("Wind: {0} {1}", windSpeedMilesPerHour, windDirection));
+					forecastBuilder.Append("\t");
+
+					forecastBuilder.Append(String.Format("Clouds: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value));
+					forecastBuilder.Append("\t");
+
+					listBox.Items.Add(forecastBuilder.ToString());
 					}
 				}
 			catch (Exception e)
@@ -404,7 +434,19 @@ namespace WeatherApplication
 
 		private void textBox_TextChanged(object sender, TextChangedEventArgs e)
 			{
+			configuration.lastZipCode = textBoxZip.Text;
+			}
 
+		private void OnClosingApp(object sender, System.ComponentModel.CancelEventArgs e)
+			{
+			string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			string configFilePath = dataFolder + "weatherConfig.txt";
+
+			XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
+
+			StreamWriter writer = new StreamWriter(configFilePath);
+
+			serializer.Serialize(writer, configuration);
 			}
 		}
 	}
