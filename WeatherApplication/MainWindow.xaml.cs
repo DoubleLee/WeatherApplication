@@ -148,7 +148,7 @@ namespace WeatherApplication
 				{
 				if ( !DateTime.Equals(lastDateTime, value) && value.Hour != lastDateTime.Hour || value.Minute != lastDateTime.Minute )
 					{
-					labelTimeString.Content = value; // this line is why there is a property, to save the ToString() call on the DateTime, unless really neccessary.
+					dateTime.Text = value.ToShortTimeString(); // this line is why there is a property, to save the ToString() call on the DateTime, unless really neccessary.
 					lastDateTime = value;
 					}
 				}
@@ -221,7 +221,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				labelErrors.Content = "Status working...";
+				progressText.Text = "Status working...";
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
@@ -232,7 +232,7 @@ namespace WeatherApplication
 
 				// Get City
 				string city = weatherNode.XPathSelectElement("city").Attribute("name").Value;
-				labelCity.Content = city;
+				this.city.Text = city;
 
 				// Get temperature and convert to ferenheit
 				var tempValue = weatherNode.XPathSelectElement("temperature").Attribute("value");
@@ -264,7 +264,7 @@ namespace WeatherApplication
 				lastApiUpdate = DateTime.SpecifyKind(lastApiUpdate, DateTimeKind.Utc);
 				lastApiUpdate = lastApiUpdate.ToLocalTime();
 				// convert UTC time to local time and parse it to string and set the label.
-				labelLastWeatherApiUpdate.Content = lastApiUpdate.ToLongTimeString();
+				apiUpdate.Text = "Api Update: " + lastApiUpdate.ToLongTimeString();
 
 				// load the current weather image icon.
 				string weatherIconString = weatherNode.XPathSelectElement("weather").Attribute("icon").Value;
@@ -273,11 +273,11 @@ namespace WeatherApplication
 				taskBarInfo.Overlay = imageCurrentWeather.Source;
 				Icon = imageCurrentWeather.Source;
 
-				labelErrors.Content = "Status good.";
+				progressText.Text = "Status good.";
 				}
 			catch( Exception e )
 				{
-				labelErrors.Content = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				progressText.Text = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
 				}
 			}
 
@@ -290,7 +290,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				labelErrors.Content = "Status working...";
+				progressText.Text = "Status working...";
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
@@ -322,11 +322,11 @@ namespace WeatherApplication
 					++i;
 					}
 				listBox1.ItemsSource = forecasts;
-				labelErrors.Content = "Status good.";
+				progressText.Text = "Status good.";
 				}
 			catch( Exception e )
 				{
-				labelErrors.Content = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				progressText.Text = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
 				}
 			}
 
@@ -334,7 +334,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				labelErrors.Content = "Status working...";
+				progressText.Text = "Status working...";
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
@@ -400,7 +400,7 @@ namespace WeatherApplication
 				}
 			catch (Exception e)
 				{
-				labelErrors.Content = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				progressText.Text = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
 				}
 			}
 
@@ -411,7 +411,7 @@ namespace WeatherApplication
 		/// <param name="args"></param>
 		public void UpdateLastApplicationUpdate()
 			{
-			labelLastApplicationUpdate.Content = DateTime.Now.ToLongTimeString();
+			appUpdates.Text = "App Update: " + DateTime.Now.ToLongTimeString();
 			}
 
 		public ImageSource LoadOrGetImageSource(string id)
@@ -461,7 +461,7 @@ namespace WeatherApplication
 			var timeSinceApiUpdate = now - lastApiUpdate;
 
 			taskBarInfo.ProgressValue = timeSinceApiUpdate.TotalHours;
-			progressBar.Value = timeSinceApiUpdate.TotalHours;
+			progressBarHoursSinceUpdate.Value = timeSinceApiUpdate.TotalHours;
 			}
 
 		private void buttonUpdate_Click(object sender, RoutedEventArgs e)
