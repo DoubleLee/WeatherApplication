@@ -42,23 +42,64 @@ namespace WeatherApplication
 				}
 			}
 		}
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
+
 	public class ForecastDay
 		{
-		// references for each forecasted day.
-		public Image forecastImage;
-		public Label dateLabel;
-		public Label labelHighTemp;
-		public Label labelLowTemp;
+		private string date;
+		private ImageSource image;
+		private string temp;
+		private string wind;
 
-		public ForecastDay( Image forecastImage, Label dateLabel, Label labelHighTemp, Label labelLowTemp )
+		public string Date
 			{
-			this.forecastImage = forecastImage;
-			this.dateLabel = dateLabel;
-			this.labelHighTemp = labelHighTemp;
-			this.labelLowTemp = labelLowTemp;
+			get
+				{
+				return date;
+				}
+
+			set
+				{
+				date = value;
+				}
+			}
+
+		public ImageSource Image
+			{
+			get
+				{
+				return image;
+				}
+
+			set
+				{
+				image = value;
+				}
+			}
+
+		public string Temp
+			{
+			get
+				{
+				return temp;
+				}
+
+			set
+				{
+				temp = value;
+				}
+			}
+
+		public string Wind
+			{
+			get
+				{
+				return wind;
+				}
+
+			set
+				{
+				wind = value;
+				}
 			}
 		}
 
@@ -82,7 +123,10 @@ namespace WeatherApplication
 
 	public partial class MainWindow : Window
 		{
-		ForecastDay[] forecastDays;
+		Dictionary<Uri, ImageSource> weatherImageSources = new Dictionary<Uri,ImageSource>();
+
+		List<ForecastDay> forecasts = new List<ForecastDay>(7);
+
 		ForecastHours[] forecastHours;
 		DispatcherTimer weatherUpdateTimer;
 		DispatcherTimer clockUpdateTimer;
@@ -113,6 +157,11 @@ namespace WeatherApplication
 		public MainWindow()
 			{
 			InitializeComponent();
+
+			for(int i = 0; i < 7; ++i)
+				{
+				forecasts.Add(new ForecastDay());
+				}
 
 			string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			string configFilePath = dataFolder + "weatherConfig.txt";
@@ -149,17 +198,6 @@ namespace WeatherApplication
 			clockUpdateTimer.Tick += UpdateClockString;
 			clockUpdateTimer.Start();
 
-			// Setup the array of forecast days, the references come from the main window's controls.
-			// We use this array for easy iteration when updating forecasts.
-			forecastDays = new ForecastDay[]
-				{ 
-				new ForecastDay(imageDay1, labelDate1, labelDayHigh1, labelDayLow1),
-				new ForecastDay(imageDay2, labelDate2, labelDayHigh2, labelDayLow2),
-				new ForecastDay(imageDay3, labelDate3, labelDayHigh3, labelDayLow3),
-				new ForecastDay(imageDay4, labelDate4, labelDayHigh4, labelDayLow4),
-				new ForecastDay(imageDay5, labelDate5, labelDayHigh5, labelDayLow5)
-				};
-
 			// call the update weather methods now.
 			UpdateWeather(null, null);
 			// call the clock update method now.
@@ -169,7 +207,7 @@ namespace WeatherApplication
 		public void UpdateWeather( object sender, EventArgs args )
 			{
 			UpdateCurrentWeather();
-			UpdateForecast();
+			UpdateDailyForecast();
 			UpdateHourlyForecast();
 			UpdateLastApplicationUpdate();
 			}
@@ -230,9 +268,10 @@ namespace WeatherApplication
 
 				// load the current weather image icon.
 				string weatherIconString = weatherNode.XPathSelectElement("weather").Attribute("icon").Value;
-				LoadWeatherIcon( imageCurrentWeather, weatherIconString );
+				
+				imageCurrentWeather.Source = LoadOrGetImageSource(weatherIconString);
 				taskBarInfo.Overlay = imageCurrentWeather.Source;
-				LoadIcon( weatherIconString );
+				Icon = imageCurrentWeather.Source;
 
 				labelErrors.Content = "Status good.";
 				}
@@ -247,7 +286,7 @@ namespace WeatherApplication
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="args"></param>
-		public async void UpdateForecast()
+		public async void UpdateDailyForecast()
 			{
 			try
 				{
@@ -260,25 +299,29 @@ namespace WeatherApplication
 
 				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
 
-				int index = 0;
-				int maxIndex = 5;
-
+				int i = 0;
 				// use the forecast days array to update the forecast data.
 				foreach ( XElement element in forecastNode.Elements() )
 					{
-					if ( index >= maxIndex )
-						break;
-
-					forecastDays[index].dateLabel.Content = element.Attribute("day").Value;
+					forecasts[i].Date = element.Attribute("day").Value;
 
 					string id = element.XPathSelectElement("symbol").Attribute("var").Value;
-					LoadWeatherIcon( forecastDays[index].forecastImage, id );
-					var tempNode = element.XPathSelectElement("temperature");
-					forecastDays[index].labelHighTemp.Content = "H " + KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0");
-					forecastDays[index].labelLowTemp.Content = "L " + KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0");;
+					forecasts[i].Image = LoadOrGetImageSource(id);
 
-					++index;
+					var tempNode = element.XPathSelectElement("temperature");
+					forecasts[i].Temp = "H " + KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0") + " " + "L " + KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0");
+					
+					var windSpeedNode = element.XPathSelectElement("windSpeed");
+					var windDirNode = element.XPathSelectElement("windDirection");
+
+					double windSpeedMetersPerSecond = float.Parse(windSpeedNode.Attribute("mps").Value);
+					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+
+					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, windDirNode.Attribute("code").Value);
+					
+					++i;
 					}
+				listBox1.ItemsSource = forecasts;
 				labelErrors.Content = "Status good.";
 				}
 			catch( Exception e )
@@ -371,35 +414,28 @@ namespace WeatherApplication
 			labelLastApplicationUpdate.Content = DateTime.Now.ToLongTimeString();
 			}
 
-		/// <summary>
-		/// Static method for loading a bitmapimage from the openweathermap api.
-		/// </summary>
-		/// <param name="image"></param>
-		/// <param name="id"></param>
-		private static void LoadWeatherIcon(Image image, string id)
+		public ImageSource LoadOrGetImageSource(string id)
 			{
 			const string url = "http://openweathermap.org/img/w/";
 			string fullUrl = url + id + ".png";
+			
+			Uri uri = new Uri(fullUrl);
+			ImageSource source;
+			if (weatherImageSources.TryGetValue(uri, out source))
+				{
+				return source;
+				}
+			else
+				{
+				BitmapImage bitmap = new BitmapImage();
+				bitmap.BeginInit();
+				bitmap.UriSource = uri;
+				bitmap.EndInit();
 
-			BitmapImage bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.UriSource = new Uri(fullUrl);
-			bitmap.EndInit();
+				weatherImageSources.Add(uri, bitmap);
 
-			image.Source = bitmap;
-			}
-
-		public void LoadIcon(string uri)
-			{
-			const string url = "http://openweathermap.org/img/w/";
-			string fullUrl = url + uri + ".png";
-
-			BitmapImage bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.UriSource = new Uri(fullUrl);
-			bitmap.EndInit();
-
-			Icon = bitmap;
+				return bitmap;
+				}
 			}
 
 		public static float KelvinToFerenheit(float kelvin)
@@ -425,6 +461,7 @@ namespace WeatherApplication
 			var timeSinceApiUpdate = now - lastApiUpdate;
 
 			taskBarInfo.ProgressValue = timeSinceApiUpdate.TotalHours;
+			progressBar.Value = timeSinceApiUpdate.TotalHours;
 			}
 
 		private void buttonUpdate_Click(object sender, RoutedEventArgs e)

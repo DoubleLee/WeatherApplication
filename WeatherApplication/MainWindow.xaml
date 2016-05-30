@@ -2,7 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WeatherApplication.MainWindow"
-        Title="Weather" Height="514.636" Width="836.333" Closing="OnClosingApp">
+        Title="Weather" Height="526.636" Width="836.333" Closing="OnClosingApp">
+	<Window.Resources>
+
+	</Window.Resources>
 	<Grid Margin="0,0,0,-5">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
@@ -10,35 +13,15 @@
 		<Label x:Name="labelCurrentWeather" Content="current weather" HorizontalAlignment="Left" Margin="76,175,0,0" VerticalAlignment="Top" Width="106" Height="26" RenderTransformOrigin="-0.443,0.474"/>
 		<Label x:Name="labelCity" HorizontalAlignment="Left" Margin="87,2,0,0" VerticalAlignment="Top" Height="34" Width="147" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="City" FontSize="14" FontWeight="Bold"/>
 		<Image x:Name="imageCurrentWeather" HorizontalAlignment="Left" Height="49" Margin="22,158,0,0" VerticalAlignment="Top" Width="68"/>
-		<Label x:Name="labelLastWeatherApiUpdate" Content="last update" HorizontalAlignment="Left" Margin="542,401,0,0" VerticalAlignment="Top" Width="122" Height="26"/>
-		<Image x:Name="imageDay1" HorizontalAlignment="Left" Height="100" Margin="36,275,0,0" VerticalAlignment="Top" Width="100"/>
-		<Label x:Name="labelDayHigh1" Content="labelHighTemp" HorizontalAlignment="Left" Margin="36,375,0,0" VerticalAlignment="Top" Width="47" Height="26"/>
-		<Label x:Name="labelDayLow1" Content="labelLowTemp" HorizontalAlignment="Left" Margin="83,375,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
-		<Image x:Name="imageDay2" HorizontalAlignment="Left" Height="100" Margin="163,275,0,0" VerticalAlignment="Top" Width="100"/>
-		<Label x:Name="labelDayHigh2" Content="labelHighTemp" HorizontalAlignment="Left" Margin="163,375,0,0" VerticalAlignment="Top" Width="47" Height="26"/>
-		<Label x:Name="labelDayLow2" Content="labelLowTemp" HorizontalAlignment="Left" Margin="210,375,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
-		<Image x:Name="imageDay3" HorizontalAlignment="Left" Height="100" Margin="291,275,0,0" VerticalAlignment="Top" Width="100"/>
-		<Label x:Name="labelDayHigh3" Content="labelHighTemp" HorizontalAlignment="Left" Margin="291,375,0,0" VerticalAlignment="Top" Width="47" Height="26"/>
-		<Label x:Name="labelDayLow3" Content="labelLowTemp" HorizontalAlignment="Left" Margin="338,375,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
-		<Image x:Name="imageDay4" HorizontalAlignment="Left" Height="100" Margin="424,275,0,0" VerticalAlignment="Top" Width="100"/>
-		<Label x:Name="labelDayHigh4" Content="labelHighTemp" HorizontalAlignment="Left" Margin="424,375,0,0" VerticalAlignment="Top" Width="47" Height="26"/>
-		<Label x:Name="labelDayLow4" Content="labelLowTemp" HorizontalAlignment="Left" Margin="471,375,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
-		<Image x:Name="imageDay5" HorizontalAlignment="Left" Height="100" Margin="548,275,0,0" VerticalAlignment="Top" Width="100"/>
-		<Label x:Name="labelDayHigh5" Content="labelHighTemp" HorizontalAlignment="Left" Margin="548,375,0,0" VerticalAlignment="Top" Width="47" Height="26"/>
-		<Label x:Name="labelDayLow5" Content="labelLowTemp" HorizontalAlignment="Left" Margin="595,375,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
-		<Label x:Name="labelDate1" Content="Date Label" HorizontalAlignment="Left" Margin="41,249,0,0" VerticalAlignment="Top" Height="26" Width="95"/>
-		<Label x:Name="labelDate2" Content="Date Label" HorizontalAlignment="Left" Margin="168,249,0,0" VerticalAlignment="Top" Height="26" Width="86"/>
-		<Label x:Name="labelDate3" Content="Date Label" HorizontalAlignment="Left" Margin="296,249,0,0" VerticalAlignment="Top" Height="26" Width="86"/>
-		<Label x:Name="labelDate4" Content="Date Label" HorizontalAlignment="Left" Margin="429,249,0,0" VerticalAlignment="Top" Height="26" Width="86"/>
-		<Label x:Name="labelDate5" Content="Date Label" HorizontalAlignment="Left" Margin="553,249,0,0" VerticalAlignment="Top" Height="26" Width="86"/>
-		<Label Content="Last Weather Data Stamp" HorizontalAlignment="Left" Margin="337,401,0,0" VerticalAlignment="Top" Width="147" Height="26"/>
-		<Label x:Name="labelLastApplicationUpdate" Content="Label" HorizontalAlignment="Left" Margin="229,401,0,0" VerticalAlignment="Top" Width="83" Height="26"/>
-		<Label HorizontalAlignment="Left" Margin="82,401,0,0" VerticalAlignment="Top" Width="142" Height="26" Content="Last Application Update"/>
+		<Label x:Name="labelLastWeatherApiUpdate" Content="last update" HorizontalAlignment="Left" Margin="681,463,0,0" VerticalAlignment="Top" Width="122" Height="26" RenderTransformOrigin="1.393,0.846"/>
+		<Label Content="Last Weather Data Stamp" HorizontalAlignment="Left" Margin="529,463,0,0" VerticalAlignment="Top" Width="147" Height="26"/>
+		<Label x:Name="labelLastApplicationUpdate" Content="Label" HorizontalAlignment="Left" Margin="142,463,0,0" VerticalAlignment="Top" Width="83" Height="26"/>
+		<Label HorizontalAlignment="Left" Margin="0,463,0,0" VerticalAlignment="Top" Width="142" Height="26" Content="Last Application Update"/>
 		<Label x:Name="labelTimeString" Content="TIME" HorizontalAlignment="Left" Margin="469,7,0,0" VerticalAlignment="Top" Width="190" FontSize="14" FontWeight="Bold" Height="29"/>
-		<Button x:Name="buttonUpdate" Content="Force Update" HorizontalAlignment="Left" Margin="601,432,0,0" VerticalAlignment="Top" Width="75" Click="buttonUpdate_Click" Height="20"/>
+		<Button x:Name="buttonUpdate" Content="Force Update" HorizontalAlignment="Left" Margin="601,432,0,0" Width="75" Click="buttonUpdate_Click" Height="20" VerticalAlignment="Top"/>
 		<Label x:Name="labelErrors" Content="" HorizontalAlignment="Left" Margin="41,427,0,0" VerticalAlignment="Top" Width="348" Height="42"/>
-		<GroupBox x:Name="groupBox" Header="Hourly Forecast" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="174,48,0,0" Height="168" Width="644">
-			<ListBox x:Name="listBox" FontFamily="Consolas"/>
+		<GroupBox x:Name="HourlyForecastGroupBox" Header="Hourly Forecast" VerticalAlignment="Top" Margin="174,48,0,0" Height="168" HorizontalAlignment="Left" Width="644">
+			<ListBox x:Name="listBox" FontFamily="Consolas" Focusable="False"/>
 		</GroupBox>
 		<Label x:Name="labelTemp" Content="temp" HorizontalAlignment="Left" Margin="95,70,0,0" VerticalAlignment="Top" Width="55" Height="26"/>
 		<Label x:Name="labelHumidity" Content="humidity" HorizontalAlignment="Left" Margin="95,101,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
@@ -46,10 +29,29 @@
 		<Label Content="Temperature" HorizontalAlignment="Left" Margin="22,70,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
 		<Label Content="Humidity" HorizontalAlignment="Left" Margin="22,101,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
 		<Label Content="Pressure" HorizontalAlignment="Left" Margin="22,127,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
-		<GroupBox x:Name="groupBox1" Header="Current Conditions" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0" Height="165" Width="159"/>
-		<GroupBox x:Name="groupBox2" Header="5 Day Forecast" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,227,0,0" Height="200" Width="709"/>
-		<TextBox x:Name="textBoxZip" HorizontalAlignment="Left" Height="23" Margin="469,432,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="textBox_TextChanged"/>
-		<Label x:Name="labelZip" Content="Zip:" HorizontalAlignment="Left" Margin="437,432,0,0" VerticalAlignment="Top"/>
+		<GroupBox x:Name="CurrentConditionsGroupBox" Header="Current Conditions" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0" Height="165" Width="159"/>
+		<GroupBox x:Name="DailyForecastGroupBox" Header="7 Day Forecast" Margin="10,227,0,0" HorizontalAlignment="Left" Width="808" VerticalAlignment="Top" Height="195">
+			<ListBox x:Name="listBox1" Focusable="False">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal" IsItemsHost="True"/>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Vertical">
+							<Label x:Name="lableDate" Content="{Binding Path=Date}" FontFamily="Consolas" HorizontalAlignment="Center" Margin="0" Padding="0"/>
+							<Image x:Name="imageForecast" Height="100" Width="100" Source="{Binding Path=Image}" Margin="0"/>
+							<Label x:Name="labelTemp" Content="{Binding Path=Temp}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
+							<Label x:Name="labelWind" Content="{Binding Path=Wind}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"></Label>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</GroupBox>
+		<TextBox x:Name="textBoxZip" HorizontalAlignment="Left" Margin="469,432,0,0" TextWrapping="Wrap" Width="120" TextChanged="textBox_TextChanged" Height="23" VerticalAlignment="Top"/>
+		<Label x:Name="labelZip" Content="Zip:" HorizontalAlignment="Left" Margin="437,432,0,0" Height="26" VerticalAlignment="Top"/>
+		<ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="10" Margin="703,438,0,0" VerticalAlignment="Top" Width="100" Maximum="1" SmallChange="0.01"/>
 
 	</Grid>
 </Window>
