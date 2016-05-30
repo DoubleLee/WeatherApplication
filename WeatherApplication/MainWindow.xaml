@@ -21,7 +21,7 @@
 		<Button x:Name="buttonUpdate" Content="Force Update" HorizontalAlignment="Left" Margin="601,432,0,0" Width="75" Click="buttonUpdate_Click" Height="20" VerticalAlignment="Top"/>
 		<Label x:Name="labelErrors" Content="" HorizontalAlignment="Left" Margin="41,427,0,0" VerticalAlignment="Top" Width="348" Height="42"/>
 		<GroupBox x:Name="HourlyForecastGroupBox" Header="Hourly Forecast" VerticalAlignment="Top" Margin="174,48,0,0" Height="168" HorizontalAlignment="Left" Width="644">
-			<ListBox x:Name="listBox" FontFamily="Consolas" Focusable="False"/>
+			<ListBox x:Name="listBox" FontFamily="Consolas" Focusable="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 		</GroupBox>
 		<Label x:Name="labelTemp" Content="temp" HorizontalAlignment="Left" Margin="95,70,0,0" VerticalAlignment="Top" Width="55" Height="26"/>
 		<Label x:Name="labelHumidity" Content="humidity" HorizontalAlignment="Left" Margin="95,101,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
@@ -31,7 +31,7 @@
 		<Label Content="Pressure" HorizontalAlignment="Left" Margin="22,127,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
 		<GroupBox x:Name="CurrentConditionsGroupBox" Header="Current Conditions" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0" Height="165" Width="159"/>
 		<GroupBox x:Name="DailyForecastGroupBox" Header="7 Day Forecast" Margin="10,227,0,0" HorizontalAlignment="Left" Width="808" VerticalAlignment="Top" Height="195">
-			<ListBox x:Name="listBox1" Focusable="False">
+			<ListBox x:Name="listBox1" Focusable="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<StackPanel Orientation="Horizontal" IsItemsHost="True"/>
