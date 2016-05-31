@@ -226,8 +226,8 @@ namespace WeatherApplication
 				{
 				progressText.Text = "Status working...";
 				UpdateCurrentWeather();
-				UpdateDailyForecast();
 				UpdateHourlyForecast();
+				UpdateDailyForecast();
 				UpdateLastApplicationUpdate();
 				progressText.Text = "Status good.";
 				}
@@ -243,13 +243,13 @@ namespace WeatherApplication
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="args"></param>
-		public async void UpdateCurrentWeather()
+		public void UpdateCurrentWeather()
 			{
 			try
 				{
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
-				WebResponse response = await request.GetResponseAsync();
+				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 				var xdoc = XDocument.Load( dataStream );
 
@@ -305,87 +305,12 @@ namespace WeatherApplication
 				}
 			}
 
-		/// <summary>
-		/// Updates the 5 day forecast data from the open weather map api forecast.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="args"></param>
-		public async void UpdateDailyForecast()
-			{
-			try
-				{
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
-				WebResponse response = await request.GetResponseAsync();
-				Stream dataStream = response.GetResponseStream();
-
-				var xdoc = XDocument.Load( dataStream );
-
-				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
-
-				int i = 0;
-				// use the forecast days array to update the forecast data.
-				foreach ( XElement element in forecastNode.Elements() )
-					{
-					DateTime parsedDate = DateTime.SpecifyKind(DateTime.Parse(element.Attribute("day").Value), DateTimeKind.Local);
-
-					string dateString = String.Format("{0} {1}/{2}",parsedDate.DayOfWeek, parsedDate.Date.Month, parsedDate.Date.Day);
-					forecasts[i].Date = dateString;
-
-					var symbolElement = element.XPathSelectElement("symbol");
-					string id = symbolElement.Attribute("var").Value;
-					forecasts[i].Image = LoadOrGetImageSource(id);
-					forecasts[i].Cond = symbolElement.Attribute("name").Value;
-
-					var precipElement = element.XPathSelectElement("precipitation");
-					if ( precipElement != null )
-						{
-						var precipAttrib = precipElement.Attribute("value");
-						if (precipAttrib != null)
-							{
-							string typeOfPrecip = precipElement.Attribute("type").Value;
-
-							double precipInches = PrecipMMToInches(Double.Parse(precipAttrib.Value));
-
-							forecasts[i].Precip = String.Format("{0:F3}\" {1}", precipInches, typeOfPrecip);
-							}
-						else
-							{
-							forecasts[i].Precip = "0.00\" None";
-							}
-						}
-					else
-						{
-						forecasts[i].Precip = "0.00\" None";
-						}
-
-					var tempNode = element.XPathSelectElement("temperature");
-					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0"), KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0"));
-					
-					var windSpeedNode = element.XPathSelectElement("windSpeed");
-					var windDirNode = element.XPathSelectElement("windDirection");
-
-					double windSpeedMetersPerSecond = float.Parse(windSpeedNode.Attribute("mps").Value);
-					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
-
-					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, windDirNode.Attribute("code").Value);
-					
-					++i;
-					}
-				listBox1.Items.Refresh();
-				}
-			catch( Exception e )
-				{
-				progressText.Text = String.Format("Error in UpdateDailyForecast: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
-				throw e;
-				}
-			}
-
-		public async void UpdateHourlyForecast()
+		public void UpdateHourlyForecast()
 			{
 			try
 				{
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
-				WebResponse response = await request.GetResponseAsync();
+				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
 				var xdoc = XDocument.Load( dataStream );
@@ -448,6 +373,81 @@ namespace WeatherApplication
 			catch (Exception e)
 				{
 				progressText.Text = String.Format("Error in UpdateHourlyForecast: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				throw e;
+				}
+			}
+
+		/// <summary>
+		/// Updates the 5 day forecast data from the open weather map api forecast.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="args"></param>
+		public void UpdateDailyForecast()
+			{
+			try
+				{
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebResponse response = request.GetResponse();
+				Stream dataStream = response.GetResponseStream();
+
+				var xdoc = XDocument.Load( dataStream );
+
+				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
+
+				int i = 0;
+				// use the forecast days array to update the forecast data.
+				foreach ( XElement element in forecastNode.Elements() )
+					{
+					DateTime parsedDate = DateTime.SpecifyKind(DateTime.Parse(element.Attribute("day").Value), DateTimeKind.Local);
+
+					string dateString = String.Format("{0} {1}/{2}",parsedDate.DayOfWeek, parsedDate.Date.Month, parsedDate.Date.Day);
+					forecasts[i].Date = dateString;
+
+					var symbolElement = element.XPathSelectElement("symbol");
+					string id = symbolElement.Attribute("var").Value;
+					forecasts[i].Image = LoadOrGetImageSource(id);
+					forecasts[i].Cond = symbolElement.Attribute("name").Value;
+
+					var precipElement = element.XPathSelectElement("precipitation");
+					if ( precipElement != null )
+						{
+						var precipAttrib = precipElement.Attribute("value");
+						if (precipAttrib != null)
+							{
+							string typeOfPrecip = precipElement.Attribute("type").Value;
+
+							double precipInches = PrecipMMToInches(Double.Parse(precipAttrib.Value));
+
+							forecasts[i].Precip = String.Format("{0:F3}\" {1}", precipInches, typeOfPrecip);
+							}
+						else
+							{
+							forecasts[i].Precip = "0.00\" None";
+							}
+						}
+					else
+						{
+						forecasts[i].Precip = "0.00\" None";
+						}
+
+					var tempNode = element.XPathSelectElement("temperature");
+					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0"), KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0"));
+					
+					var windSpeedNode = element.XPathSelectElement("windSpeed");
+					var windDirNode = element.XPathSelectElement("windDirection");
+
+					double windSpeedMetersPerSecond = float.Parse(windSpeedNode.Attribute("mps").Value);
+					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+
+					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, windDirNode.Attribute("code").Value);
+					
+					++i;
+					}
+				listBox1.Items.Refresh();
+				}
+			catch( Exception e )
+				{
+				progressText.Text = String.Format("Error in UpdateDailyForecast: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
 				throw e;
 				}
 			}
