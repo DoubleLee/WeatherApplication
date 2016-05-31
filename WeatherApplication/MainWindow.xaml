@@ -49,6 +49,8 @@
 							<StackPanel Orientation="Vertical">
 								<Label x:Name="lableDate" Content="{Binding Date}" FontFamily="Consolas" HorizontalAlignment="Center" Margin="0" Padding="0"/>
 								<Image x:Name="imageForecast" Height="100" Width="100" Source="{Binding Image}" Margin="0"/>
+								<Label x:Name="labelDayCondition" Content="{Binding Cond}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
+								<Label x:Name="labelPrecip" Content="{Binding Precip}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
 								<Label x:Name="labelTemp" Content="{Binding Temp}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
 								<Label x:Name="labelWind" Content="{Binding Wind}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
 							</StackPanel>

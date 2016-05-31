@@ -47,6 +47,8 @@ namespace WeatherApplication
 		{
 		private string date;
 		private ImageSource image;
+		private string cond;
+		private string precip;
 		private string temp;
 		private string wind;
 
@@ -100,6 +102,18 @@ namespace WeatherApplication
 				{
 				wind = value;
 				}
+			}
+
+		public string Cond
+			{
+			get { return cond; }
+			set { cond = value; }
+			}
+
+		public string Precip
+			{
+			get { return precip; }
+			set { precip = value; }
 			}
 		}
 
@@ -158,10 +172,12 @@ namespace WeatherApplication
 			{
 			InitializeComponent();
 
-			for(int i = 0; i < 7; ++i)
+			for(int i = 0; i < forecasts.Capacity; ++i)
 				{
 				forecasts.Add(new ForecastDay());
 				}
+
+			listBox1.ItemsSource = forecasts;
 
 			string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			string configFilePath = dataFolder + "weatherConfig.txt";
@@ -206,10 +222,20 @@ namespace WeatherApplication
 
 		public void UpdateWeather( object sender, EventArgs args )
 			{
-			UpdateCurrentWeather();
-			UpdateDailyForecast();
-			UpdateHourlyForecast();
-			UpdateLastApplicationUpdate();
+			try
+				{
+				progressText.Text = "Status working...";
+				UpdateCurrentWeather();
+				UpdateDailyForecast();
+				UpdateHourlyForecast();
+				UpdateLastApplicationUpdate();
+				progressText.Text = "Status good.";
+				}
+			catch (Exception e)
+				{
+				
+				}
+			
 			}
 
 		/// <summary>
@@ -221,7 +247,6 @@ namespace WeatherApplication
 			{
 			try
 				{
-				progressText.Text = "Status working...";
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
@@ -272,12 +297,11 @@ namespace WeatherApplication
 				imageCurrentWeather.Source = LoadOrGetImageSource(weatherIconString);
 				taskBarInfo.Overlay = imageCurrentWeather.Source;
 				Icon = imageCurrentWeather.Source;
-
-				progressText.Text = "Status good.";
 				}
 			catch( Exception e )
 				{
-				progressText.Text = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				progressText.Text = String.Format("Error in UpdateCurrentWeather: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				throw e;
 				}
 			}
 
@@ -290,7 +314,6 @@ namespace WeatherApplication
 			{
 			try
 				{
-				progressText.Text = "Status working...";
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
@@ -303,13 +326,40 @@ namespace WeatherApplication
 				// use the forecast days array to update the forecast data.
 				foreach ( XElement element in forecastNode.Elements() )
 					{
-					forecasts[i].Date = element.Attribute("day").Value;
+					DateTime parsedDate = DateTime.SpecifyKind(DateTime.Parse(element.Attribute("day").Value), DateTimeKind.Local);
 
-					string id = element.XPathSelectElement("symbol").Attribute("var").Value;
+					string dateString = String.Format("{0} {1}/{2}",parsedDate.DayOfWeek, parsedDate.Date.Month, parsedDate.Date.Day);
+					forecasts[i].Date = dateString;
+
+					var symbolElement = element.XPathSelectElement("symbol");
+					string id = symbolElement.Attribute("var").Value;
 					forecasts[i].Image = LoadOrGetImageSource(id);
+					forecasts[i].Cond = symbolElement.Attribute("name").Value;
+
+					var precipElement = element.XPathSelectElement("precipitation");
+					if ( precipElement != null )
+						{
+						var precipAttrib = precipElement.Attribute("value");
+						if (precipAttrib != null)
+							{
+							string typeOfPrecip = precipElement.Attribute("type").Value;
+
+							double precipInches = PrecipMMToInches(Double.Parse(precipAttrib.Value));
+
+							forecasts[i].Precip = String.Format("{0:F3}\" {1}", precipInches, typeOfPrecip);
+							}
+						else
+							{
+							forecasts[i].Precip = "0.00\" None";
+							}
+						}
+					else
+						{
+						forecasts[i].Precip = "0.00\" None";
+						}
 
 					var tempNode = element.XPathSelectElement("temperature");
-					forecasts[i].Temp = "H " + KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0") + " " + "L " + KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0");
+					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0"), KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0"));
 					
 					var windSpeedNode = element.XPathSelectElement("windSpeed");
 					var windDirNode = element.XPathSelectElement("windDirection");
@@ -321,12 +371,12 @@ namespace WeatherApplication
 					
 					++i;
 					}
-				listBox1.ItemsSource = forecasts;
-				progressText.Text = "Status good.";
+				listBox1.Items.Refresh();
 				}
 			catch( Exception e )
 				{
-				progressText.Text = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				progressText.Text = String.Format("Error in UpdateDailyForecast: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				throw e;
 				}
 			}
 
@@ -334,7 +384,6 @@ namespace WeatherApplication
 			{
 			try
 				{
-				progressText.Text = "Status working...";
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = await request.GetResponseAsync();
 				Stream dataStream = response.GetResponseStream();
@@ -369,9 +418,7 @@ namespace WeatherApplication
                     var precipValue = precipElement.Attribute("value");
                     if (precipValue != null)
 						{
-                        double precipMilliMetersPerHour = double.Parse(precipValue.Value);
-						double precipMilliMetersInTimeFrame = precipMilliMetersPerHour * 3.0; // 3 because it's 3 hours in a per hour format.
-						double precipInches = precipMilliMetersInTimeFrame * 0.03937; // this number is the conversion to inches.
+						double precipInches = PrecipMMToInches(Double.Parse(precipValue.Value));
 
 						forecastBuilder.Append(String.Format("Precip: {0:f3}\" {1}", precipInches, precipElement.Attribute("type").Value));
 						}
@@ -400,8 +447,17 @@ namespace WeatherApplication
 				}
 			catch (Exception e)
 				{
-				progressText.Text = String.Format("Error: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				progressText.Text = String.Format("Error in UpdateHourlyForecast: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
+				throw e;
 				}
+			}
+
+		private static double PrecipMMToInches(double originalValue)
+			{
+			double precipMilliMetersPerHour = originalValue;
+			double precipMilliMetersInTimeFrame = precipMilliMetersPerHour * 3.0; // 3 because it's 3 hours in a per hour format.
+			double precipInches = precipMilliMetersInTimeFrame * 0.03937; // this number is the conversion to inches.
+			return precipInches;
 			}
 
 		/// <summary>
