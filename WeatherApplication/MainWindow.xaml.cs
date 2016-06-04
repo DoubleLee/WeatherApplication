@@ -376,56 +376,38 @@ namespace WeatherApplication
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
-				var xdoc = XDocument.Load( dataStream );
+				XmlSerializer serializer = new XmlSerializer(typeof(Daily.weatherdata));
 
-				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
+				StreamReader reader = new StreamReader(dataStream);
+				Daily.weatherdata dailyForecast = (Daily.weatherdata)serializer.Deserialize(reader);
 
 				int i = 0;
 				// use the forecast days array to update the forecast data.
-				foreach ( XElement element in forecastNode.Elements() )
+				foreach ( Daily.weatherdataTime dayForecast in dailyForecast.forecast )
 					{
-					DateTime parsedDate = DateTime.SpecifyKind(DateTime.Parse(element.Attribute("day").Value), DateTimeKind.Local);
+					DateTime parsedDate = DateTime.SpecifyKind(dayForecast.day, DateTimeKind.Local);
 
 					string dateString = String.Format("{0} {1}/{2}",parsedDate.DayOfWeek, parsedDate.Date.Month, parsedDate.Date.Day);
 					forecasts[i].Date = dateString;
 
-					var symbolElement = element.XPathSelectElement("symbol");
-					string id = symbolElement.Attribute("var").Value;
-					forecasts[i].Image = LoadOrGetImageSource(id);
-					forecasts[i].Cond = symbolElement.Attribute("name").Value;
+					forecasts[i].Image = LoadOrGetImageSource(dayForecast.symbol.var);
+					forecasts[i].Cond = dayForecast.symbol.name;
 
-					var precipElement = element.XPathSelectElement("precipitation");
-					if ( precipElement != null )
+					if ( dayForecast.precipitation.valueSpecified)
 						{
-						var precipAttrib = precipElement.Attribute("value");
-						if (precipAttrib != null)
-							{
-							string typeOfPrecip = precipElement.Attribute("type").Value;
-
-							double precipInches = PrecipMMToInches(Double.Parse(precipAttrib.Value));
-
-							forecasts[i].Precip = String.Format("{0:F3}\" {1}", precipInches, typeOfPrecip);
-							}
-						else
-							{
-							forecasts[i].Precip = "0.00\" None";
-							}
+						forecasts[i].Precip = String.Format("{0:F3}\" {1}",  PrecipMMToInches((double)dayForecast.precipitation.value), dayForecast.precipitation.type);
 						}
 					else
 						{
 						forecasts[i].Precip = "0.00\" None";
 						}
-
-					var tempNode = element.XPathSelectElement("temperature");
-					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0"), KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0"));
 					
-					var windSpeedNode = element.XPathSelectElement("windSpeed");
-					var windDirNode = element.XPathSelectElement("windDirection");
+					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit((float)dayForecast.temperature.max).ToString("F0"), KelvinToFerenheit((float)dayForecast.temperature.min).ToString("F0"));
 
-					double windSpeedMetersPerSecond = float.Parse(windSpeedNode.Attribute("mps").Value);
+					double windSpeedMetersPerSecond = (double)dayForecast.windSpeed.mps;
 					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
 
-					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, windDirNode.Attribute("code").Value);
+					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, dayForecast.windDirection.code);
 					
 					++i;
 					}
