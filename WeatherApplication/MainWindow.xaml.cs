@@ -301,39 +301,40 @@ namespace WeatherApplication
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
-				var xdoc = XDocument.Load( dataStream );
+				XmlSerializer serializer = new XmlSerializer(typeof(weatherdata));
+
+				StreamReader reader = new StreamReader(dataStream);
+				weatherdata hourlyForecast = (weatherdata)serializer.Deserialize(reader);
 
 				DateTime nowMidnight = DateTime.Now.Date;
-
-				var forecastNode = xdoc.Root.XPathSelectElement("forecast");
+				
 				
 				listBox.Items.Clear();
 
 				StringBuilder forecastBuilder = new StringBuilder();
-				foreach ( XElement timeElement in forecastNode.Elements() )
+				foreach ( weatherdataTime hoursForecast in hourlyForecast.forecast )
 					{
 					forecastBuilder.Clear();
 
-					DateTime startDate = DateTime.Parse(timeElement.Attribute("from").Value).ToLocalTime();
+					DateTime startDate = hoursForecast.from.ToLocalTime();
 					forecastBuilder.Append("Days: " + (Math.Max((startDate.Date - nowMidnight).Days, 0)).ToString());
 					forecastBuilder.Append("  ");
 					forecastBuilder.Append(startDate.ToShortTimeString());
 					forecastBuilder.Append('-');
-					forecastBuilder.Append(DateTime.Parse(timeElement.Attribute("to").Value).ToLocalTime().ToShortTimeString());
+					forecastBuilder.Append(hoursForecast.to.ToLocalTime().ToShortTimeString());
 					forecastBuilder.Append("\t");
 
-					var temp = CelciusToDegrees(float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value));
+					var temp = CelciusToDegrees((float)hoursForecast.temperature.value);
 						
-					forecastBuilder.Append(String.Format("Temp: {0}",temp.ToString("F0")));
+					forecastBuilder.Append(String.Format("Temp: {0}", temp.ToString("F0")));
 					forecastBuilder.Append("\t");
 
-					var precipElement = timeElement.XPathSelectElement("precipitation");
-                    var precipValue = precipElement.Attribute("value");
-                    if (precipValue != null)
+					
+                    if (hoursForecast.precipitation.valueSpecified)
 						{
-						double precipInches = PrecipMMToInches(Double.Parse(precipValue.Value));
+						double precipInches = PrecipMMToInches((double)hoursForecast.precipitation.value);
 
-						forecastBuilder.Append(String.Format("Precip: {0:f3}\" {1}", precipInches, precipElement.Attribute("type").Value));
+						forecastBuilder.Append(String.Format("Precip: {0:f3}\" {1}", precipInches, hoursForecast.precipitation.type));
 						}
 					else
 						{
@@ -341,18 +342,15 @@ namespace WeatherApplication
 						}
 					forecastBuilder.Append("\t");
 
-					var windDirectionElement = timeElement.XPathSelectElement("windDirection");
-					var windSpeedElement = timeElement.XPathSelectElement("windSpeed");
-
-					double windSpeedMetersPerSecond = float.Parse(windSpeedElement.Attribute("mps").Value);
+					double windSpeedMetersPerSecond = (double)hoursForecast.windSpeed.mps;
 					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
 						
-					string windDirection = windDirectionElement.Attribute("code").Value;
+					string windDirection = hoursForecast.windDirection.code;
 
 					forecastBuilder.Append(String.Format("Wind: {0} {1}", windSpeedMilesPerHour, windDirection));
 					forecastBuilder.Append("\t");
 
-					forecastBuilder.Append(String.Format("Clouds: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value));
+					forecastBuilder.Append(String.Format("Clouds: {0}%", hoursForecast.clouds.all));
 					forecastBuilder.Append("\t");
 
 					listBox.Items.Add(forecastBuilder.ToString());
