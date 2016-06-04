@@ -255,42 +255,26 @@ namespace WeatherApplication
 				XmlSerializer serializer = new XmlSerializer(typeof(current));
 				StreamReader reader = new StreamReader(dataStream);
 
-				current currentWeatherObj = (current)serializer.Deserialize(reader);
+				current curr = (current)serializer.Deserialize(reader);
 
-				var xdoc = XDocument.Load( dataStream );
-
-				var weatherNode = xdoc.Root;
-
-				// Get City
-				string city = weatherNode.XPathSelectElement("city").Attribute("name").Value;
-				this.city.Text = city;
+				this.city.Text = curr.city.name;
 
 				// Get temperature and convert to ferenheit
-				var tempValue = weatherNode.XPathSelectElement("temperature").Attribute("value");
-				float kelvin = float.Parse(tempValue.Value);
+				float kelvin = (float)curr.temperature.value;
 				float ferenheit = KelvinToFerenheit(kelvin);
 				labelTemp.Content = ferenheit.ToString("F0");
 
 				// get current weather description string
-				string currentWeather = weatherNode.XPathSelectElement("weather").Attribute("value").Value;
-				labelCurrentWeather.Content = currentWeather;
+				labelCurrentWeather.Content = curr.weather.value;
 
 				// get humidity
-				string humidity = weatherNode.XPathSelectElement("humidity").Attribute("value").Value;
-				string humidityUnitString = weatherNode.XPathSelectElement("humidity").Attribute("unit").Value;
-				labelHumidity.Content = humidity + humidityUnitString;
+				labelHumidity.Content = curr.humidity.value.ToString() + curr.humidity.unit;
 
 				// get pressure
-				var pressureNode = weatherNode.XPathSelectElement("pressure");
-				string pressure = pressureNode.Attribute("value").Value;
-				string pressureUnitString = pressureNode.Attribute("unit").Value;
-				labelPressure.Content = pressure + pressureUnitString;
-
-				// get last update of the open weather api as a string
-				string lastUpdate = weatherNode.XPathSelectElement("lastupdate").Attribute("value").Value;
+				labelPressure.Content = curr.pressure.value + curr.pressure.unit;
 
 				// parse the last api update string to a datetime struct.
-				lastApiUpdate = DateTime.Parse(lastUpdate);
+				lastApiUpdate = curr.lastupdate.value;
 				// tell the struct that it is UTC time.
 				lastApiUpdate = DateTime.SpecifyKind(lastApiUpdate, DateTimeKind.Utc);
 				lastApiUpdate = lastApiUpdate.ToLocalTime();
@@ -298,9 +282,7 @@ namespace WeatherApplication
 				apiUpdate.Text = "Api Update: " + lastApiUpdate.ToLongTimeString();
 
 				// load the current weather image icon.
-				string weatherIconString = weatherNode.XPathSelectElement("weather").Attribute("icon").Value;
-				
-				imageCurrentWeather.Source = LoadOrGetImageSource(weatherIconString);
+				imageCurrentWeather.Source = LoadOrGetImageSource(curr.weather.icon);
 				taskBarInfo.Overlay = imageCurrentWeather.Source;
 				Icon = imageCurrentWeather.Source;
 				}
