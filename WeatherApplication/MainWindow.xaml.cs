@@ -251,6 +251,12 @@ namespace WeatherApplication
 				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
+
+				XmlSerializer serializer = new XmlSerializer(typeof(current));
+				StreamReader reader = new StreamReader(dataStream);
+
+				current currentWeatherObj = (current)serializer.Deserialize(reader);
+
 				var xdoc = XDocument.Load( dataStream );
 
 				var weatherNode = xdoc.Root;
