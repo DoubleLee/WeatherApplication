@@ -398,13 +398,13 @@ namespace WeatherApplication
 	public partial class currentHumidity
 		{
 
-		private byte valueField;
+		private int valueField;
 
 		private string unitField;
 
 		/// <remarks/>
 		[System.Xml.Serialization.XmlAttributeAttribute()]
-		public byte value
+		public int value
 			{
 			get
 				{
@@ -563,7 +563,7 @@ namespace WeatherApplication
 	public partial class currentWindDirection
 		{
 
-		private ushort valueField;
+		private decimal valueField;
 
 		private string codeField;
 
@@ -571,7 +571,7 @@ namespace WeatherApplication
 
 		/// <remarks/>
 		[System.Xml.Serialization.XmlAttributeAttribute()]
-		public ushort value
+		public decimal value
 			{
 			get
 				{

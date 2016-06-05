@@ -63,6 +63,9 @@
 				<Label x:Name="labelZip" Content="Zip:"/>
 				<TextBox x:Name="textBoxZip" TextChanged="textBox_TextChanged" Width="125" MaxLines="1"/>
 			</WrapPanel>
+			<MediaElement x:Name="mediaElement1" Source="http://radar.weather.gov/Conus/Loop/NatLoop.gif" Margin="0" LoadedBehavior="Manual" MediaEnded="MediaElement_OnMediaEnded" Width="800" Height="400">
+
+			</MediaElement>
 			<StatusBar>
 				<ProgressBar x:Name="progressBarHoursSinceUpdate" Value="0.5" Minimum="0" Maximum="1.0" Width="100" Height="10" RenderTransformOrigin="0.5,0.5">
 					<ProgressBar.RenderTransform>

@@ -218,6 +218,8 @@ namespace WeatherApplication
 			UpdateWeather(null, null);
 			// call the clock update method now.
 			UpdateClockString(null, null);
+
+			mediaElement1.Play();
 			}
 
 		public void UpdateWeather( object sender, EventArgs args )
@@ -229,6 +231,11 @@ namespace WeatherApplication
 				UpdateHourlyForecast();
 				UpdateDailyForecast();
 				UpdateLastApplicationUpdate();
+
+				var source = mediaElement1.Source;
+				mediaElement1.Source = null;
+				mediaElement1.Source = source;
+
 				progressText.Text = "Status good.";
 				}
 			catch (Exception e)
@@ -508,6 +515,12 @@ namespace WeatherApplication
 			StreamWriter writer = new StreamWriter(configFilePath);
 
 			serializer.Serialize(writer, configuration);
+			}
+
+		private void MediaElement_OnMediaEnded(object sender, RoutedEventArgs e)
+			{
+			mediaElement1.Position = new TimeSpan(0,0,0,0,1);
+			mediaElement1.Play();
 			}
 		}
 	}
