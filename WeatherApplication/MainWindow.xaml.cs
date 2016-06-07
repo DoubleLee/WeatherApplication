@@ -51,6 +51,7 @@ namespace WeatherApplication
 		private string precip;
 		private string temp;
 		private string wind;
+		private string dayGrade;
 
 		public string Date
 			{
@@ -114,6 +115,15 @@ namespace WeatherApplication
 			{
 			get { return precip; }
 			set { precip = value; }
+			}
+
+		public string DayGrade
+			{
+			get { return dayGrade; }
+			set 
+				{
+				dayGrade = value;
+				}
 			}
 		}
 
@@ -409,13 +419,22 @@ namespace WeatherApplication
 						forecasts[i].Precip = "0.00\" None";
 						}
 					
-					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit((float)dayForecast.temperature.max).ToString("F0"), KelvinToFerenheit((float)dayForecast.temperature.min).ToString("F0"));
+					float maxTemp =  KelvinToFerenheit((float)dayForecast.temperature.max);
+					forecasts[i].Temp = String.Format("H:{0} L:{1}", maxTemp.ToString("F0"), KelvinToFerenheit((float)dayForecast.temperature.min).ToString("F0"));
 
 					double windSpeedMetersPerSecond = (double)dayForecast.windSpeed.mps;
 					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
 
 					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, dayForecast.windDirection.code);
 					
+					float tempGrade = GetTemperatureFishingGrade(maxTemp);
+					float conditionsGrade = GetConditionsGrade(dayForecast.symbol.var);
+					float windGrade = GetWindGrade(windSpeedMilesPerHour);
+
+					float totalGrade = tempGrade + conditionsGrade + windGrade;
+					float grade = totalGrade / 3.0f;
+
+					forecasts[i].DayGrade = "Grade: " + grade.ToString("F0") + "%";
 					++i;
 					}
 				listBox1.Items.Refresh();
@@ -521,6 +540,96 @@ namespace WeatherApplication
 			{
 			mediaElement1.Position = new TimeSpan(0,0,0,0,1);
 			mediaElement1.Play();
+			}
+
+		private float GetTemperatureFishingGrade(float temp)
+			{
+			if (temp >= 110)
+				{
+				return 70.0f;
+				}
+			if (temp > 105.0f && temp < 110)
+				{
+				return 80.0f;
+				}
+			if (temp >= 95.0f && temp < 105.0f)
+				{
+				return 90.0f;
+				}
+			if (temp >= 70.0f && temp < 95.0f)
+				{
+				return 100.0f;
+				}
+			if (temp >= 65.0f && temp < 70.0f)
+				{
+				return 80.0f;
+				}
+			if (temp >= 50 && temp < 65.0f)
+				{
+				return 70.0f;
+				}
+				
+			return 0.0f; // fuck it way to hot or cold.
+			}
+
+		private float GetConditionsGrade(string condition)
+			{
+			if (String.CompareOrdinal(condition, "01d") == 0)
+				{
+				return 100.0f;
+				}
+			if (String.CompareOrdinal(condition, "02d") == 0)
+				{
+				return 95.0f;
+				}
+			if (String.CompareOrdinal(condition, "03d") == 0)
+				{
+				return 90.0f;
+				}
+			if (String.CompareOrdinal(condition, "04d") == 0)
+				{
+				return 85.0f;
+				}
+			if (String.CompareOrdinal(condition, "50d") == 0)
+				{
+				return 75.0f;
+				}
+			if (String.CompareOrdinal(condition, "09d") == 0)
+				{
+				return 70.0f;
+				}
+			if (String.CompareOrdinal(condition, "10d") == 0)
+				{
+				return 60.0f;
+				}
+			if (String.CompareOrdinal(condition, "11d") == 0)
+				{
+				return 0.0f;
+				}
+			if (String.CompareOrdinal(condition, "13d") == 0)
+				{
+				return 0.0f;
+				}
+
+			throw new InvalidDataException("Condition string unhandled, " + condition);
+			}
+
+		float GetWindGrade(float speedmph)
+			{
+			if (speedmph <= 5.0f)
+				{
+				return 100.0f;
+				}
+			if (speedmph <= 10.0f)
+				{
+				return 90.0f;
+				}
+			if (speedmph <= 15.0f)
+				{
+				return 75.0f;
+				}
+			
+			return 0;
 			}
 		}
 	}

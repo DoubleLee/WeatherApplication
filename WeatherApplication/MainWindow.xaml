@@ -9,7 +9,7 @@
 	<DockPanel LastChildFill="True">
 		<StackPanel x:Name="Panel">
 			<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-				<TextBlock x:Name="city" Text ="Springfield" FontFamily="Consolas" FontWeight="Bold" FontSize="18"/>
+				<TextBlock x:Name="city" Text ="City" FontFamily="Consolas" FontWeight="Bold" FontSize="18"/>
 				<Separator/>
 				<TextBlock x:Name="dateTime" Text="DateTime.Now;" TextAlignment="Right" Margin="10,0,0,0" FontFamily="Consolas" FontWeight="Bold" FontSize="18"/>
 			</WrapPanel>
@@ -49,10 +49,11 @@
 							<StackPanel Orientation="Vertical">
 								<Label x:Name="lableDate" Content="{Binding Date}" FontFamily="Consolas" HorizontalAlignment="Center" Margin="0" Padding="0"/>
 								<Image x:Name="imageForecast" Height="100" Width="100" Source="{Binding Image}" Margin="0"/>
-								<Label x:Name="labelDayCondition" Content="{Binding Cond}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
-								<Label x:Name="labelPrecip" Content="{Binding Precip}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
-								<Label x:Name="labelTemp" Content="{Binding Temp}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
-								<Label x:Name="labelWind" Content="{Binding Wind}" Margin="0" Padding="0" Height="26" FontFamily="Consolas" HorizontalAlignment="Center"/>
+								<Label x:Name="labelDayCondition" Content="{Binding Cond}" Margin="0" Padding="0" FontFamily="Consolas" HorizontalAlignment="Center"/>
+								<Label x:Name="labelPrecip" Content="{Binding Precip}" Margin="0" Padding="0" FontFamily="Consolas" HorizontalAlignment="Center"/>
+								<Label x:Name="labelTemp" Content="{Binding Temp}" Margin="0" Padding="0" FontFamily="Consolas" HorizontalAlignment="Center"/>
+								<Label x:Name="labelWind" Content="{Binding Wind}" Margin="0" Padding="0" FontFamily="Consolas" HorizontalAlignment="Center"/>
+								<Label x:Name="labeDayGrade" Content="{Binding DayGrade}" Margin="0" Padding="0" FontFamily="Consolas" HorizontalAlignment="Center"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
