@@ -427,14 +427,21 @@ namespace WeatherApplication
 
 					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, dayForecast.windDirection.code);
 					
-					float tempGrade = GetTemperatureFishingGrade(maxTemp);
-					float conditionsGrade = GetConditionsGrade(dayForecast.symbol.var);
-					float windGrade = GetWindGrade(windSpeedMilesPerHour);
+					if (!dayForecast.symbol.var.Contains('n'))
+						{
+						float tempGrade = GetTemperatureFishingGrade(maxTemp);
+						float conditionsGrade = GetConditionsGrade(dayForecast.symbol.var);
+						float windGrade = GetWindGrade(windSpeedMilesPerHour);
 
-					float totalGrade = tempGrade + conditionsGrade + windGrade;
-					float grade = totalGrade / 3.0f;
+						float totalGrade = tempGrade + conditionsGrade + windGrade;
+						float grade = totalGrade / 3.0f;
 
-					forecasts[i].DayGrade = "Grade: " + grade.ToString("F0") + "%";
+						forecasts[i].DayGrade = "Grade: " + grade.ToString("F0") + "%";
+						}
+					else
+						{
+						forecasts[i].DayGrade = "Grade: Night";
+						}
 					++i;
 					}
 				listBox1.Items.Refresh();
