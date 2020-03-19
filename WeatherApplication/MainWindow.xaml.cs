@@ -38,7 +38,7 @@ namespace WeatherApplication
 			{
 			get 
 				{
-				return new Configuration{lastZipCode = "65804"};
+				return new Configuration{lastZipCode = "65807"};
 				}
 			}
 		}
@@ -248,7 +248,7 @@ namespace WeatherApplication
 			try
 				{
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2&units=imperial", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 				var xdoc = XDocument.Load( dataStream );
@@ -260,10 +260,8 @@ namespace WeatherApplication
 				this.city.Text = city;
 
 				// Get temperature and convert to ferenheit
-				var tempValue = weatherNode.XPathSelectElement("temperature").Attribute("value");
-				float kelvin = float.Parse(tempValue.Value);
-				float ferenheit = KelvinToFerenheit(kelvin);
-				labelTemp.Content = ferenheit.ToString("F0");
+				var tempValue = weatherNode.XPathSelectElement("temperature").Attribute("value").Value;
+				labelTemp.Content = tempValue;
 
 				// get current weather description string
 				string currentWeather = weatherNode.XPathSelectElement("weather").Attribute("value").Value;
@@ -309,7 +307,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2&units=imperial", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
@@ -334,7 +332,7 @@ namespace WeatherApplication
 					forecastBuilder.Append(DateTime.Parse(timeElement.Attribute("to").Value).ToLocalTime().ToShortTimeString());
 					forecastBuilder.Append("\t");
 
-					var temp = CelciusToDegrees(float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value));
+					var temp = float.Parse(timeElement.XPathSelectElement("temperature").Attribute("value").Value);
 						
 					forecastBuilder.Append(String.Format("Temp: {0}",temp.ToString("F0")));
 					forecastBuilder.Append("\t");
@@ -356,12 +354,12 @@ namespace WeatherApplication
 					var windDirectionElement = timeElement.XPathSelectElement("windDirection");
 					var windSpeedElement = timeElement.XPathSelectElement("windSpeed");
 
-					double windSpeedMetersPerSecond = float.Parse(windSpeedElement.Attribute("mps").Value);
-					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+					double windSpeed = float.Parse(windSpeedElement.Attribute("mps").Value);
+					//float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
 						
 					string windDirection = windDirectionElement.Attribute("code").Value;
 
-					forecastBuilder.Append(String.Format("Wind: {0} {1}", windSpeedMilesPerHour, windDirection));
+					forecastBuilder.Append(String.Format("Wind: {0} {1}", windSpeed.ToString("F0"), windDirection));
 					forecastBuilder.Append("\t");
 
 					forecastBuilder.Append(String.Format("Clouds: {0}%", timeElement.XPathSelectElement("clouds").Attribute("all").Value));
@@ -386,7 +384,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2&units=imperial", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
@@ -431,15 +429,15 @@ namespace WeatherApplication
 						}
 
 					var tempNode = element.XPathSelectElement("temperature");
-					forecasts[i].Temp = String.Format("H:{0} L:{1}", KelvinToFerenheit(float.Parse(tempNode.Attribute("max").Value)).ToString("F0"), KelvinToFerenheit(float.Parse(tempNode.Attribute("min").Value)).ToString("F0"));
+					forecasts[i].Temp = String.Format("H:{0} L:{1}",float.Parse(tempNode.Attribute("max").Value), float.Parse(tempNode.Attribute("min").Value));
 					
 					var windSpeedNode = element.XPathSelectElement("windSpeed");
 					var windDirNode = element.XPathSelectElement("windDirection");
 
-					double windSpeedMetersPerSecond = float.Parse(windSpeedNode.Attribute("mps").Value);
-					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+					double windSpeed = float.Parse(windSpeedNode.Attribute("mps").Value);
+					//float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
 
-					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, windDirNode.Attribute("code").Value);
+					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeed.ToString("F0"), windDirNode.Attribute("code").Value);
 					
 					++i;
 					}
