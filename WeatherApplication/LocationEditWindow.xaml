@@ -9,9 +9,9 @@
 	<Grid>
 		<StackPanel>
 			<Label Content="Zip"/>
-			<TextBox x:Name="textBoxZip" Height="23" TextWrapping="Wrap" Text="TextBox"/>
+			<TextBox x:Name="textBoxZip" Height="23" TextWrapping="Wrap"/>
 			<Label Content="Description"/>
-			<TextBox x:Name="textBoxDescription" Height="23" TextWrapping="Wrap" Text="TextBox"/>
+			<TextBox x:Name="textBoxDescription" Height="23" TextWrapping="Wrap"/>
 			<Button x:Name="buttonSave" Content="Save" Click="buttonSave_Click"/>
 			<Button x:Name="buttonCancel" Content="Cancel" Click="buttonCancel_Click"/>
 

@@ -210,7 +210,8 @@ namespace WeatherApplication
 			// Setup the task bar info
 			taskBarInfo = new TaskbarItemInfo();
 			taskBarInfo.ProgressState = TaskbarItemProgressState.Normal;
-			Application.Current.MainWindow.TaskbarItemInfo = taskBarInfo;
+			if(Application.Current != null)
+				Application.Current.MainWindow.TaskbarItemInfo = taskBarInfo;
 
 			// setup the weather update timer. Runs every 10 minutes.
 			weatherUpdateTimer = new DispatcherTimer();
