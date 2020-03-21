@@ -11,7 +11,7 @@
 			<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
 				<TextBlock x:Name="city" Text ="City" FontFamily="Consolas" FontWeight="Bold" FontSize="18"/>
 				<Separator/>
-				<TextBlock x:Name="dateTime" Text="DateTime.Now;" TextAlignment="Right" Margin="10,0,0,0" FontFamily="Consolas" FontWeight="Bold" FontSize="18"/>
+				<TextBlock x:Name="dateTime" Text="DateTime.Now;" TextAlignment="Right" Margin="10,0,0,0" FontFamily="Consolas" FontWeight="Bold" FontSize="18" Width="500"/>
 			</WrapPanel>
 			<WrapPanel Orientation="Horizontal">
 				<GroupBox x:Name="CurrentConditionsGroupBox" Header="Current Conditions" HorizontalAlignment="Left" VerticalAlignment="Top" Height="165" Width="159">
@@ -63,6 +63,7 @@
 				<Button x:Name="buttonUpdate" Content="Force Update" Click="buttonUpdate_Click"/>
 				<Label x:Name="labelZip" Content="Zip:"/>
 				<TextBox x:Name="textBoxZip" TextChanged="textBox_TextChanged" Width="125" MaxLines="1"/>
+				<Button x:Name="buttonFavorites" Content="Favorites" Click="buttonFavorites_Click"/>
 			</WrapPanel>
 			<MediaElement x:Name="mediaElement1" Source="http://radar.weather.gov/Conus/Loop/NatLoop.gif" Margin="0" LoadedBehavior="Manual" MediaEnded="MediaElement_OnMediaEnded" Width="800" Height="400">
 

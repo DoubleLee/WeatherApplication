@@ -172,7 +172,7 @@ namespace WeatherApplication
 				{
 				if ( !DateTime.Equals(lastDateTime, value) && value.Hour != lastDateTime.Hour || value.Minute != lastDateTime.Minute )
 					{
-					dateTime.Text = value.ToShortTimeString(); // this line is why there is a property, to save the ToString() call on the DateTime, unless really neccessary.
+					dateTime.Text = "Your Local Time: " + value.ToShortTimeString(); // this line is why there is a property, to save the ToString() call on the DateTime, unless really neccessary.
 					lastDateTime = value;
 					}
 				}
@@ -230,6 +230,8 @@ namespace WeatherApplication
 			UpdateClockString(null, null);
 
 			mediaElement1.Play();
+
+			DBUtils.Conn.CreateTableAsync<Location>();
 			}
 
 		public void UpdateWeather( object sender, EventArgs args )
@@ -265,7 +267,7 @@ namespace WeatherApplication
 			try
 				{
 				// The url contains at the end options for the call, including my unique api key, as well as the type of api call and any other settings.
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2&units=imperial", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
@@ -277,8 +279,7 @@ namespace WeatherApplication
 				this.city.Text = curr.city.name;
 
 				// Get temperature and convert to ferenheit
-				float kelvin = (float)curr.temperature.value;
-				float ferenheit = KelvinToFerenheit(kelvin);
+				float ferenheit = (float)curr.temperature.value;
 				labelTemp.Content = ferenheit.ToString("F0");
 
 				// get current weather description string
@@ -314,7 +315,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0}&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast?zip={0}&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2&units=imperial", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
@@ -341,7 +342,7 @@ namespace WeatherApplication
 					forecastBuilder.Append(hoursForecast.to.ToLocalTime().ToShortTimeString());
 					forecastBuilder.Append("\t");
 
-					var temp = CelciusToDegrees((float)hoursForecast.temperature.value);
+					var temp = (float)hoursForecast.temperature.value;
 						
 					forecastBuilder.Append(String.Format("Temp: {0}", temp.ToString("F0")));
 					forecastBuilder.Append("\t");
@@ -359,12 +360,11 @@ namespace WeatherApplication
 						}
 					forecastBuilder.Append("\t");
 
-					double windSpeedMetersPerSecond = (double)hoursForecast.windSpeed.mps;
-					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
-						
+					float windSpeedMilesPerHour = (float)hoursForecast.windSpeed.mps;
+
 					string windDirection = hoursForecast.windDirection.code;
 
-					forecastBuilder.Append(String.Format("Wind: {0} {1}", windSpeedMilesPerHour, windDirection));
+					forecastBuilder.Append(String.Format("Wind: {0} {1}", windSpeedMilesPerHour.ToString("F0"), windDirection));
 					forecastBuilder.Append("\t");
 
 					forecastBuilder.Append(String.Format("Clouds: {0}%", hoursForecast.clouds.all));
@@ -389,7 +389,7 @@ namespace WeatherApplication
 			{
 			try
 				{
-				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2", textBoxZip.Text));
+				WebRequest request = WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/forecast/daily?zip={0},us&mode=xml&APPID=930964919a915aefc90d0d5e3b0f4bd2&units=imperial", textBoxZip.Text));
 				WebResponse response = request.GetResponse();
 				Stream dataStream = response.GetResponseStream();
 
@@ -419,13 +419,12 @@ namespace WeatherApplication
 						forecasts[i].Precip = "0.00\" None";
 						}
 					
-					float maxTemp =  KelvinToFerenheit((float)dayForecast.temperature.max);
-					forecasts[i].Temp = String.Format("H:{0} L:{1}", maxTemp.ToString("F0"), KelvinToFerenheit((float)dayForecast.temperature.min).ToString("F0"));
+					float maxTemp = (float)dayForecast.temperature.max;
+					forecasts[i].Temp = String.Format("H:{0} L:{1}", maxTemp.ToString("F0"), ((float)dayForecast.temperature.min).ToString("F0"));
 
-					double windSpeedMetersPerSecond = (double)dayForecast.windSpeed.mps;
-					float windSpeedMilesPerHour = (float)Math.Round(2.23694 * windSpeedMetersPerSecond); // Convert Meters Per Second to Miles Per Hour
+					float windSpeedMilesPerHour = (float)dayForecast.windSpeed.mps;
 
-					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour, dayForecast.windDirection.code);
+					forecasts[i].Wind = string.Format("Wind: {0}MPH {1}", windSpeedMilesPerHour.ToString("F0"), dayForecast.windDirection.code);
 					
 					if (!dayForecast.symbol.var.Contains('n'))
 						{
@@ -531,6 +530,12 @@ namespace WeatherApplication
 			configuration.lastZipCode = textBoxZip.Text;
 			}
 
+		public void UpdateToThisZipCode(string zipCode)
+			{
+			configuration.lastZipCode = textBoxZip.Text = zipCode;
+			UpdateWeather(buttonUpdate, EventArgs.Empty);
+			}
+
 		private void OnClosingApp(object sender, System.ComponentModel.CancelEventArgs e)
 			{
 			string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -576,7 +581,7 @@ namespace WeatherApplication
 				return 70.0f;
 				}
 				
-			return 0.0f; // fuck it way to hot or cold.
+			return 0.0f; //way to hot or cold.
 			}
 
 		private float GetConditionsGrade(string condition)
@@ -637,6 +642,12 @@ namespace WeatherApplication
 				}
 			
 			return 0;
+			}
+
+		private void buttonFavorites_Click(object sender, RoutedEventArgs e)
+			{
+			var loc = new Locations(this);
+			loc.ShowDialog();
 			}
 		}
 	}

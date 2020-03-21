@@ -1,0 +1,21 @@
+﻿<Window x:Class="WeatherApplication.LocationEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeatherApplication"
+        mc:Ignorable="d"
+        Title="LocationEditWindow" Height="450" Width="358.891">
+	<Grid>
+		<StackPanel>
+			<Label Content="Zip"/>
+			<TextBox x:Name="textBoxZip" Height="23" TextWrapping="Wrap" Text="TextBox"/>
+			<Label Content="Description"/>
+			<TextBox x:Name="textBoxDescription" Height="23" TextWrapping="Wrap" Text="TextBox"/>
+			<Button x:Name="buttonSave" Content="Save" Click="buttonSave_Click"/>
+			<Button x:Name="buttonCancel" Content="Cancel" Click="buttonCancel_Click"/>
+
+		</StackPanel>
+
+	</Grid>
+</Window>
