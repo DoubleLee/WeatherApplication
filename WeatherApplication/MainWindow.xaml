@@ -34,7 +34,7 @@
 
 				</GroupBox>
 				<GroupBox x:Name="HourlyForecastGroupBox" Header="Hourly Forecast" VerticalAlignment="Top" Height="168" HorizontalAlignment="Left" Width="642">
-					<ListBox x:Name="listBox" FontFamily="Consolas" Focusable="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+					<DataGrid x:Name="listBox" IsReadOnly="True" AutoGenerateColumns="True" ItemsSource="{Binding}" FontFamily="Consolas" Focusable="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 				</GroupBox>
 			</WrapPanel>
 			<GroupBox x:Name="DailyForecastGroupBox" Header="7 Day Forecast">

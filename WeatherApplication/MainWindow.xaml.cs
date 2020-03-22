@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -326,11 +327,35 @@ namespace WeatherApplication
 				weatherdata hourlyForecast = (weatherdata)serializer.Deserialize(reader);
 
 				DateTime nowMidnight = DateTime.Now.Date;
-				
-				
-				listBox.Items.Clear();
 
-				StringBuilder forecastBuilder = new StringBuilder();
+				List<HourlyDisplayData> displayData = new List<HourlyDisplayData>();
+				for(int i = 0; i < hourlyForecast.forecast.Length; ++i)
+					{
+					weatherdataTime hoursForecast = hourlyForecast.forecast[i];
+					HourlyDisplayData d = new HourlyDisplayData();
+					
+					displayData.Add(d);
+
+					DateTime startDate = hoursForecast.from.ToLocalTime();
+					d.Day = Math.Max((startDate.Date - nowMidnight).Days, 0);
+					d.TimeStart = startDate.ToShortTimeString();
+					d.TimeEnd = hoursForecast.to.ToLocalTime().ToShortTimeString();
+					d.Temp = (int)hoursForecast.temperature.value;
+					d.Precip = PrecipMMToInches((double)hoursForecast.precipitation.value).ToString("F3");
+					d.wind = String.Format("{0}mph {1}", hoursForecast.windSpeed.mps.ToString("F0"), hoursForecast.windDirection.code);
+					d.clouds = hoursForecast.clouds.all + "%";
+					d.grade = GetGrade(hoursForecast).ToString("F0");
+					}
+				listBox.AutoGenerateColumns = true;
+				listBox.ItemsSource = displayData;
+				
+				//foreach (var col in listBox.Columns) 
+				//	{ 
+				//	if (double.IsNaN(col.Width.Value)) col.Width = col.ActualWidth; 
+				//	col.Width = double.NaN; 
+				//	} 
+				
+				/*
 				foreach ( weatherdataTime hoursForecast in hourlyForecast.forecast )
 					{
 					forecastBuilder.Clear();
@@ -373,6 +398,7 @@ namespace WeatherApplication
 
 					listBox.Items.Add(forecastBuilder.ToString());
 					}
+					*/
 				}
 			catch (Exception e)
 				{
@@ -429,12 +455,7 @@ namespace WeatherApplication
 					
 					if (!dayForecast.symbol.var.Contains('n'))
 						{
-						float tempGrade = GetTemperatureFishingGrade(maxTemp);
-						float conditionsGrade = GetConditionsGrade(dayForecast.symbol.var);
-						float windGrade = GetWindGrade(windSpeedMilesPerHour);
-
-						float totalGrade = tempGrade + conditionsGrade + windGrade;
-						float grade = totalGrade / 3.0f;
+						float grade = GetGrade(dayForecast);
 
 						forecasts[i].DayGrade = "Grade: " + grade.ToString("F0") + "%";
 						}
@@ -451,6 +472,30 @@ namespace WeatherApplication
 				progressText.Text = String.Format("Error in UpdateDailyForecast: [{0}]\nAt: [{1}]", e.Message, DateTime.Now.ToLongTimeString());
 				throw e;
 				}
+			}
+
+		private float GetGrade(Daily.weatherdataTime dayForecast)
+			{
+			float tempGrade = GetTemperatureFishingGrade((float)dayForecast.temperature.max);
+			float conditionsGrade = GetConditionsGrade(dayForecast.symbol.var);
+			float windGrade = GetWindGrade((float)dayForecast.windSpeed.mps);
+			float cloudinessGrade = Math.Max(50.0f, (float)dayForecast.clouds.all);
+
+			float totalGrade = tempGrade + conditionsGrade + windGrade + cloudinessGrade;
+			float grade = totalGrade / 4.0f;
+			return grade;
+			}
+
+		private float GetGrade(weatherdataTime timeForecast)
+			{
+			float tempGrade = GetTemperatureFishingGrade((float)timeForecast.temperature.max);
+			float conditionsGrade = GetConditionsGrade(timeForecast.symbol.var);
+			float windGrade = GetWindGrade((float)timeForecast.windSpeed.mps);
+			float cloudinessGrade = Math.Max(50.0f, (float)timeForecast.clouds.all);
+
+			float totalGrade = tempGrade + conditionsGrade + windGrade + cloudinessGrade;
+			float grade = totalGrade / 4.0f;
+			return grade;
 			}
 
 		private static double PrecipMMToInches(double originalValue)
@@ -624,7 +669,9 @@ namespace WeatherApplication
 				return 0.0f;
 				}
 
-			throw new InvalidDataException("Condition string unhandled, " + condition);
+			return 0;
+
+			//throw new InvalidDataException("Condition string unhandled, " + condition);
 			}
 
 		float GetWindGrade(float speedmph)
@@ -640,6 +687,15 @@ namespace WeatherApplication
 			if (speedmph <= 15.0f)
 				{
 				return 75.0f;
+				}
+			if(speedmph <= 25.0f)
+				{
+				return 75.0f;
+				}
+
+			if(speedmph <= 40f)
+				{
+				return 50.0f;
 				}
 			
 			return 0;

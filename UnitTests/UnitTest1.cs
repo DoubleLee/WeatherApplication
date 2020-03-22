@@ -21,6 +21,7 @@ namespace UnitTests
 		[TestMethod]
 		public void TestMethod2()
 			{
+			// this creates the connection and pulls the table or throws exceptions
 			var locData = DBUtils.Conn.Table<Location>();
 			Assert.IsNotNull(locData);
 			// you have to have run the whether application at least once.

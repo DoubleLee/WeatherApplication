@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WeatherApplication.App" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.current" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAABAoCAAAABAAAAADICQAAABQFAI=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentCity" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAIAAAAIAAAAAAAQBEACADAAAAAAAAAgA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentCityCoord" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAACAAAAQAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentCitySun" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAQAAAAAQgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentTemperature" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAwAAAAAAAAAEAAAACCACAAAIAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentHumidity" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentPressure" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentWind" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEIAAAAAAAAAAAAAIAAQAAIAAAAQAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentWindSpeed" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAGACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentWindDirection" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAIAAGACAEAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentClouds" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAGACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentPrecipitation" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentWeather" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAQAAAIAAAAAAAAAACACAAAQAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.currentLastupdate" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CurrentXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.DBUtils" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DBUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdata" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABIAAAAAAIAAAAAAAAQACgQAAAAAEBAAAAAAACAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataLocation" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAIAAAKACAAAFAAADAAAAAAAACAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataLocationLocation" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQAAAAAAAAAABgABAAAAACIAAAAgACAAgAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataMeta" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAgACACAAEAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataSun" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAQAAAAAQgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTime" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAA4AAIAEAAQAAYAABAICAgAAAAAAAACgCQAAAAQAII=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimeSymbol" Collapsed="true">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAMAAAAAAQAAAIIAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimePrecipitation" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAiAAAgAAEAAEAAAAADACAAAAAAAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimeWindDirection" Collapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAgAAAIAAEAAAEAAAQAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimeWindSpeed" Collapsed="true">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAEAAAAAAACAAAAAAQ=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimeTemperature" Collapsed="true">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAwAAAAAAAAAEAAAACCACAAAIAAAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimePressure" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimeHumidity" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.weatherdataTimeClouds" Collapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAgAAAAAAAAAEAAAAACACAAAAAAAACAAAA=</HashCode>
+      <FileName>HourlyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Location">
+    <Position X="4.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.LocationEditWindow" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="10.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABACAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LocationEditWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WeatherApplication.Locations" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAIgAAAgAAAAAAAAIAEAAAAAAAAA=</HashCode>
+      <FileName>Locations.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WeatherApplication.Configuration" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.ForecastDay" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAgAQAAAQEAAAEBCBAAAEgQAABAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.ForecastHours" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAABAAAAAAEAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.MainWindow" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="7.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AEQBEAEEBaIAAAAAAAQBAgwAAGCBgQAEMAAIAAAAAAE=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdata" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABIAAAAAAIAAAAAAAAQACgQAAAAAEBAAAAAAACAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataLocation" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAIAAAKACAAAFAAADAAAAAAAACAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataLocationLocation" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQAAAAAAAAAABgABAAAAACIAAAAgACAAgAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataMeta" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAgACACAAEAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataSun" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAQAAAAAQgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTime" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAA4AAAAEAAAAAYAABAICAAAAAEAAAACACQAAAAQAII=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimeSymbol" Collapsed="true">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAMAAAAAAQAAAIIAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimePrecipitation" Collapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAgAAEAAAAAAAADACAAAAAAAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimeWindDirection" Collapsed="true">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAgAAAIAAEAAAEAAAQAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimeWindSpeed" Collapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAEAAAAAAACAAAAAAQ=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimeTemperature" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgEAAAAAAQAAAJAQAAAAAAAAGAAAAAAIAAIAIAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimePressure" Collapsed="true">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimeHumidity" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAEAAAAACACAAAAAAAAAAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Daily.weatherdataTimeClouds" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAgAAAAAAAAAEAAAAACACAAAAAAAACAAAA=</HashCode>
+      <FileName>DailyXmlToClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Properties.Resources" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WeatherApplication.Properties.Settings" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
